@@ -9,6 +9,9 @@ const project = new awscdk.AwsCdkConstructLibrary({
   defaultReleaseBranch: 'main',
   stability: 'experimental',
   projenrcTs: true,
+  gitignore: [
+    'cdk.out',
+  ],
   cdkVersion: '2.24.0',
   integrationTestAutoDiscover: false,
   lambdaOptions: {
