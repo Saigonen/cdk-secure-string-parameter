@@ -41,6 +41,33 @@
       ],
       "condition": "! git log --oneline -1 | grep -q \"chore(release):\""
     },
+    "bundle": {
+      "name": "bundle",
+      "description": "Prepare assets",
+      "steps": [
+        {
+          "spawn": "bundle:lambda/secure-string-parameter-handler.lambda"
+        }
+      ]
+    },
+    "bundle:lambda/secure-string-parameter-handler.lambda": {
+      "name": "bundle:lambda/secure-string-parameter-handler.lambda",
+      "description": "Create a JavaScript bundle from src/lambda/secure-string-parameter-handler.lambda.ts",
+      "steps": [
+        {
+          "exec": "esbuild --bundle src/lambda/secure-string-parameter-handler.lambda.ts --target=\"node16\" --platform=\"node\" --outfile=\"assets/lambda/secure-string-parameter-handler.lambda/index.js\" --external:aws-sdk --sourcemap"
+        }
+      ]
+    },
+    "bundle:lambda/secure-string-parameter-handler.lambda:watch": {
+      "name": "bundle:lambda/secure-string-parameter-handler.lambda:watch",
+      "description": "Continuously update the JavaScript bundle from src/lambda/secure-string-parameter-handler.lambda.ts",
+      "steps": [
+        {
+          "exec": "esbuild --bundle src/lambda/secure-string-parameter-handler.lambda.ts --target=\"node16\" --platform=\"node\" --outfile=\"assets/lambda/secure-string-parameter-handler.lambda/index.js\" --external:aws-sdk --sourcemap --watch"
+        }
+      ]
+    },
     "clobber": {
       "name": "clobber",
       "description": "hard resets to HEAD of origin and cleans the local repo",
@@ -96,7 +123,7 @@
       "description": "Synthesize project files",
       "steps": [
         {
-          "exec": "node .projenrc.js"
+          "exec": "ts-node --project tsconfig.dev.json .projenrc.ts"
         }
       ]
     },
@@ -126,7 +153,7 @@
       "description": "Runs eslint against the codebase",
       "steps": [
         {
-          "exec": "eslint --ext .ts,.tsx --fix --no-error-on-unmatched-pattern src test build-tools .projenrc.js"
+          "exec": "eslint --ext .ts,.tsx --fix --no-error-on-unmatched-pattern src test build-tools projenrc .projenrc.ts"
         }
       ]
     },
@@ -172,7 +199,12 @@
     },
     "pre-compile": {
       "name": "pre-compile",
-      "description": "Prepare the project for compilation"
+      "description": "Prepare the project for compilation",
+      "steps": [
+        {
+          "spawn": "bundle"
+        }
+      ]
     },
     "release": {
       "name": "release",

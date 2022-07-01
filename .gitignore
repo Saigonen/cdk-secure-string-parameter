@@ -50,3 +50,5 @@ junit.xml
 .jsii
 tsconfig.json
 !/API.md
+/assets/
+!/src/lambda/secure-string-parameter-handler-function.ts
