@@ -1,11 +1,7 @@
-// import * as path from 'path';
 import { CustomResource, RemovalPolicy, Resource, Stack } from 'aws-cdk-lib';
 import { Effect, Grant, IGrantable, PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { IAlias, IKey, Key } from 'aws-cdk-lib/aws-kms';
-//import { Runtime, IFunction } from 'aws-cdk-lib/aws-lambda';
 import { IFunction } from 'aws-cdk-lib/aws-lambda';
-//import { NodejsFunction, OutputFormat } from 'aws-cdk-lib/aws-lambda-nodejs';
-import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
 import { RetentionDays } from 'aws-cdk-lib/aws-logs';
 import { IStringParameter, ParameterDataType, ParameterOptions, ParameterType, StringParameter } from 'aws-cdk-lib/aws-ssm';
 import { Provider } from 'aws-cdk-lib/custom-resources';
@@ -178,36 +174,11 @@ export class SecureStringParameter extends Resource implements IStringParameter 
     return this.stringParameter;
   }
 
-  private getOrCreateHandler(): NodejsFunction {
+  private getOrCreateHandler(): IFunction {
     const id = 'SecureStringParameterCustomResourceHandler';
     const stack = Stack.of(this);
     const existing = stack.node.tryFindChild(id);
-    if (existing) return existing as NodejsFunction;
-    /*
-    const eventHandler = new NodejsFunction(stack, id, {
-      runtime: Runtime.NODEJS_16_X,
-      //entry: path.join(__dirname, './lambda/secure-string-parameter-handler.js'),
-      entry: path.join(__dirname, '../src/lambda/secure-string-parameter-handler.ts'),
-      handler: 'handler',
-      bundling: {
-        sourceMap: true,
-        format: OutputFormat.ESM,
-        minify: true,
-        keepNames: true,
-        environment: {
-          NODE_ENV: 'production',
-        },
-        // https://github.com/evanw/esbuild/issues/1921
-        banner: 'import { createRequire } from "module";const require = createRequire(import.meta.url);',
-      },
-      initialPolicy: [new PolicyStatement({
-        effect: Effect.ALLOW,
-        resources: ['*'], // Must allow * to handle parameter name changes
-        actions: ['ssm:PutParameter', 'ssm:DeleteParameter'],
-      })],
-      logRetention: RetentionDays.ONE_WEEK,
-    });
-    */
+    if (existing) return existing as IFunction;
     const eventHandler = new SecureStringParameterHandlerFunction(stack, id, {
       initialPolicy: [new PolicyStatement({
         effect: Effect.ALLOW,
