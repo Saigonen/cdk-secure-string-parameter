@@ -1,6 +1,6 @@
 import { CustomResource, RemovalPolicy, Resource, Stack } from 'aws-cdk-lib';
 import { Effect, Grant, IGrantable, PolicyStatement } from 'aws-cdk-lib/aws-iam';
-import { IAlias, IKey, Key } from 'aws-cdk-lib/aws-kms';
+import { Alias, IAlias, IKey, Key } from 'aws-cdk-lib/aws-kms';
 import { IFunction } from 'aws-cdk-lib/aws-lambda';
 import { RetentionDays } from 'aws-cdk-lib/aws-logs';
 import { IStringParameter, ParameterDataType, ParameterOptions, ParameterType, StringParameter } from 'aws-cdk-lib/aws-ssm';
@@ -123,8 +123,14 @@ export class SecureStringParameter extends Resource implements IStringParameter 
     this.eventHandler = this.getOrCreateHandler();
 
     if (this.encryptionKey) {
-      const isAlias = (key: IKey): key is IAlias => 'aliasTargetKey' in key;
-      const key = isAlias(this.encryptionKey) ? Key.fromLookup(this, 'key', { aliasName: this.encryptionKey.aliasName }) : this.encryptionKey;
+      const isIAlias = (key: IKey): key is IAlias => 'aliasTargetKey' in key;
+      const isAlias = (key: IKey): key is Alias => key instanceof Alias;
+      const getKey = (key: IKey): IKey => {
+        if (isAlias(key)) return key.aliasTargetKey;
+        if (isIAlias(key)) return Key.fromLookup(this, 'key', { aliasName: key.aliasName });
+        return key;
+      };
+      const key = getKey(this.encryptionKey);
       this.eventHandler.addToRolePolicy(
         new PolicyStatement({
           effect: Effect.ALLOW,
