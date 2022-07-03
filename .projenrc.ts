@@ -1,4 +1,6 @@
 import { awscdk } from 'projen';
+import { UpgradeDependenciesSchedule } from 'projen/lib/javascript';
+
 const project = new awscdk.AwsCdkConstructLibrary({
   author: 'Matti Saikkonen',
   authorAddress: 'matti.saikkonen@gmail.com',
@@ -14,6 +16,11 @@ const project = new awscdk.AwsCdkConstructLibrary({
   ],
   cdkVersion: '2.24.0',
   integrationTestAutoDiscover: false,
+  depsUpgradeOptions: {
+    workflowOptions: {
+      schedule: UpgradeDependenciesSchedule.MONTHLY,
+    },
+  },
   lambdaOptions: {
     runtime: awscdk.LambdaRuntime.NODEJS_16_X,
     bundlingOptions: {
@@ -37,4 +44,5 @@ const project = new awscdk.AwsCdkConstructLibrary({
     'uuid',
   ],
 });
+
 project.synth();
