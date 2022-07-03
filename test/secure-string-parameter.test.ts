@@ -14,9 +14,9 @@ describe('SecureStringParameter', () => {
     });
     const template = Template.fromStack(stack);
     template.hasResourceProperties('Custom::SecureStringParameter', {
-      parameterName: 'test',
-      stringValue: 'value',
-      valueType: 'plaintext',
+      Name: 'test',
+      Value: 'value',
+      ValueType: 'plaintext',
     });
   });
 
@@ -27,12 +27,18 @@ describe('SecureStringParameter', () => {
         PolicyDocument: {
           Statement: [
             {
-              Action: ['ssm:PutParameter', 'ssm:DeleteParameter'],
+              Action: [
+                'ssm:PutParameter',
+                'ssm:DeleteParameter',
+              ],
               Effect: 'Allow',
               Resource: '*',
             },
             {
-              Action: ['kms:Decrypt', 'kms:Encrypt'],
+              Action: [
+                'kms:Decrypt',
+                'kms:Encrypt',
+              ],
               Effect: 'Allow',
               Resource: keyResource,
             },
@@ -44,19 +50,19 @@ describe('SecureStringParameter', () => {
 
     function createSecureStringParameter(stack: Stack, key: IKey) {
       new SecureStringParameter(stack, 'Parameter', {
+        encryptionKey: key,
         parameterName: 'test',
         stringValue: 'encryptedvalue',
         valueType: ValueType.ENCRYPTED,
-        encryptionKey: key,
       });
     };
 
     function assertResourceProperties(template: Template, key: any) {
       template.hasResourceProperties('Custom::SecureStringParameter', {
-        parameterName: 'test',
-        stringValue: 'encryptedvalue',
-        valueType: 'encrypted',
-        encryptionKey: key,
+        EncryptionKey: key,
+        Name: 'test',
+        Value: 'encryptedvalue',
+        ValueType: 'encrypted',
       });
     }
 

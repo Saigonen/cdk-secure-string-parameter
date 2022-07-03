@@ -460,6 +460,100 @@ Only `SecureString` is allowed.
 
 ---
 
+### CamelCaseSecureStringParameterResourceProperties <a name="CamelCaseSecureStringParameterResourceProperties" id="cdk-secure-string-parameter.CamelCaseSecureStringParameterResourceProperties"></a>
+
+#### Initializer <a name="Initializer" id="cdk-secure-string-parameter.CamelCaseSecureStringParameterResourceProperties.Initializer"></a>
+
+```typescript
+import { CamelCaseSecureStringParameterResourceProperties } from 'cdk-secure-string-parameter'
+
+const camelCaseSecureStringParameterResourceProperties: CamelCaseSecureStringParameterResourceProperties = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#cdk-secure-string-parameter.CamelCaseSecureStringParameterResourceProperties.property.name">name</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#cdk-secure-string-parameter.CamelCaseSecureStringParameterResourceProperties.property.value">value</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#cdk-secure-string-parameter.CamelCaseSecureStringParameterResourceProperties.property.valueType">valueType</a></code> | <code><a href="#cdk-secure-string-parameter.ValueType">ValueType</a></code> | *No description.* |
+| <code><a href="#cdk-secure-string-parameter.CamelCaseSecureStringParameterResourceProperties.property.allowedPattern">allowedPattern</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#cdk-secure-string-parameter.CamelCaseSecureStringParameterResourceProperties.property.description">description</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#cdk-secure-string-parameter.CamelCaseSecureStringParameterResourceProperties.property.encryptionKey">encryptionKey</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#cdk-secure-string-parameter.CamelCaseSecureStringParameterResourceProperties.property.tier">tier</a></code> | <code>string</code> | *No description.* |
+
+---
+
+##### `name`<sup>Required</sup> <a name="name" id="cdk-secure-string-parameter.CamelCaseSecureStringParameterResourceProperties.property.name"></a>
+
+```typescript
+public readonly name: string;
+```
+
+- *Type:* string
+
+---
+
+##### `value`<sup>Required</sup> <a name="value" id="cdk-secure-string-parameter.CamelCaseSecureStringParameterResourceProperties.property.value"></a>
+
+```typescript
+public readonly value: string;
+```
+
+- *Type:* string
+
+---
+
+##### `valueType`<sup>Required</sup> <a name="valueType" id="cdk-secure-string-parameter.CamelCaseSecureStringParameterResourceProperties.property.valueType"></a>
+
+```typescript
+public readonly valueType: ValueType;
+```
+
+- *Type:* <a href="#cdk-secure-string-parameter.ValueType">ValueType</a>
+
+---
+
+##### `allowedPattern`<sup>Optional</sup> <a name="allowedPattern" id="cdk-secure-string-parameter.CamelCaseSecureStringParameterResourceProperties.property.allowedPattern"></a>
+
+```typescript
+public readonly allowedPattern: string;
+```
+
+- *Type:* string
+
+---
+
+##### `description`<sup>Optional</sup> <a name="description" id="cdk-secure-string-parameter.CamelCaseSecureStringParameterResourceProperties.property.description"></a>
+
+```typescript
+public readonly description: string;
+```
+
+- *Type:* string
+
+---
+
+##### `encryptionKey`<sup>Optional</sup> <a name="encryptionKey" id="cdk-secure-string-parameter.CamelCaseSecureStringParameterResourceProperties.property.encryptionKey"></a>
+
+```typescript
+public readonly encryptionKey: string;
+```
+
+- *Type:* string
+
+---
+
+##### `tier`<sup>Optional</sup> <a name="tier" id="cdk-secure-string-parameter.CamelCaseSecureStringParameterResourceProperties.property.tier"></a>
+
+```typescript
+public readonly tier: string;
+```
+
+- *Type:* string
+
+---
+
 ### EncryptedSecureStringParameterProps <a name="EncryptedSecureStringParameterProps" id="cdk-secure-string-parameter.EncryptedSecureStringParameterProps"></a>
 
 #### Initializer <a name="Initializer" id="cdk-secure-string-parameter.EncryptedSecureStringParameterProps.Initializer"></a>
@@ -832,100 +926,6 @@ public readonly encryptionKey: IKey;
 - *Default:* alias/aws/ssm
 
 The encryption key that is used to encrypt this parameter.
-
----
-
-### SecureStringParameterResourceProperties <a name="SecureStringParameterResourceProperties" id="cdk-secure-string-parameter.SecureStringParameterResourceProperties"></a>
-
-#### Initializer <a name="Initializer" id="cdk-secure-string-parameter.SecureStringParameterResourceProperties.Initializer"></a>
-
-```typescript
-import { SecureStringParameterResourceProperties } from 'cdk-secure-string-parameter'
-
-const secureStringParameterResourceProperties: SecureStringParameterResourceProperties = { ... }
-```
-
-#### Properties <a name="Properties" id="Properties"></a>
-
-| **Name** | **Type** | **Description** |
-| --- | --- | --- |
-| <code><a href="#cdk-secure-string-parameter.SecureStringParameterResourceProperties.property.parameterName">parameterName</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#cdk-secure-string-parameter.SecureStringParameterResourceProperties.property.stringValue">stringValue</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#cdk-secure-string-parameter.SecureStringParameterResourceProperties.property.valueType">valueType</a></code> | <code><a href="#cdk-secure-string-parameter.ValueType">ValueType</a></code> | *No description.* |
-| <code><a href="#cdk-secure-string-parameter.SecureStringParameterResourceProperties.property.allowedPattern">allowedPattern</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#cdk-secure-string-parameter.SecureStringParameterResourceProperties.property.description">description</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#cdk-secure-string-parameter.SecureStringParameterResourceProperties.property.encryptionKey">encryptionKey</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#cdk-secure-string-parameter.SecureStringParameterResourceProperties.property.tier">tier</a></code> | <code>string</code> | *No description.* |
-
----
-
-##### `parameterName`<sup>Required</sup> <a name="parameterName" id="cdk-secure-string-parameter.SecureStringParameterResourceProperties.property.parameterName"></a>
-
-```typescript
-public readonly parameterName: string;
-```
-
-- *Type:* string
-
----
-
-##### `stringValue`<sup>Required</sup> <a name="stringValue" id="cdk-secure-string-parameter.SecureStringParameterResourceProperties.property.stringValue"></a>
-
-```typescript
-public readonly stringValue: string;
-```
-
-- *Type:* string
-
----
-
-##### `valueType`<sup>Required</sup> <a name="valueType" id="cdk-secure-string-parameter.SecureStringParameterResourceProperties.property.valueType"></a>
-
-```typescript
-public readonly valueType: ValueType;
-```
-
-- *Type:* <a href="#cdk-secure-string-parameter.ValueType">ValueType</a>
-
----
-
-##### `allowedPattern`<sup>Optional</sup> <a name="allowedPattern" id="cdk-secure-string-parameter.SecureStringParameterResourceProperties.property.allowedPattern"></a>
-
-```typescript
-public readonly allowedPattern: string;
-```
-
-- *Type:* string
-
----
-
-##### `description`<sup>Optional</sup> <a name="description" id="cdk-secure-string-parameter.SecureStringParameterResourceProperties.property.description"></a>
-
-```typescript
-public readonly description: string;
-```
-
-- *Type:* string
-
----
-
-##### `encryptionKey`<sup>Optional</sup> <a name="encryptionKey" id="cdk-secure-string-parameter.SecureStringParameterResourceProperties.property.encryptionKey"></a>
-
-```typescript
-public readonly encryptionKey: string;
-```
-
-- *Type:* string
-
----
-
-##### `tier`<sup>Optional</sup> <a name="tier" id="cdk-secure-string-parameter.SecureStringParameterResourceProperties.property.tier"></a>
-
-```typescript
-public readonly tier: string;
-```
-
-- *Type:* string
 
 ---
 

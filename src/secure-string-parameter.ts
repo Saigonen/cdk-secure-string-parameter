@@ -24,13 +24,16 @@ export enum ValueType {
   ENCRYPTED = 'encrypted'
 }
 
-export interface SecureStringParameterResourceProperties {
-  readonly parameterName: string;
-  readonly stringValue: string;
+// Template Literal Types are not yet supported in JSII (https://github.com/aws/jsii/issues/3609)
+// When Typescript 4.x is supported, switch this implementation to:
+// export type CamelCase<T> = { [K in keyof T as Uncapitalize<K & string>]: T[K]; }
+export interface CamelCaseSecureStringParameterResourceProperties {
   readonly allowedPattern?: string;
   readonly description?: string;
-  readonly tier?: string;
   readonly encryptionKey?: string;
+  readonly name: string;
+  readonly tier?: string;
+  readonly value: string;
   readonly valueType: ValueType;
 }
 
@@ -92,23 +95,23 @@ export type SecureStringParameterProps = EncryptedSecureStringParameterProps | P
  * @resource Custom::SecureStringParameter
  */
 export class SecureStringParameter extends Resource implements IStringParameter {
-  readonly parameterArn: string;
-  readonly parameterName: string;
-  readonly parameterType: string;
-  readonly stringValue: string;
+  private readonly eventHandler: IFunction;
+  private readonly provider: Provider;
+  private stringParameter?: IStringParameter;
   /**
    * The encryption key that is used to encrypt this parameter.
    *
    * @attribute
    */
   readonly encryptionKey?: IKey;
+  readonly parameterArn: string;
+  readonly parameterName: string;
+  readonly parameterType: string;
+  readonly stringValue: string;
   /**
    * The type of the stringValue.
    */
   readonly valueType: ValueType;
-  private readonly eventHandler: IFunction;
-  private readonly provider: Provider;
-  private stringParameter?: IStringParameter;
 
   constructor(scope: Construct, id: string, props: SecureStringParameterProps) {
     super(scope, id);
@@ -142,14 +145,14 @@ export class SecureStringParameter extends Resource implements IStringParameter 
 
     this.provider = this.getOrCreateProvider();
 
-    const properties: SecureStringParameterResourceProperties = {
-      parameterName: this.parameterName,
-      stringValue: this.stringValue,
+    const properties: CamelCaseSecureStringParameterResourceProperties = {
       allowedPattern: props.allowedPattern,
       description: props.description,
-      tier: props.tier,
       encryptionKey: this.encryptionKey?.keyId,
-      valueType: props.valueType,
+      name: this.parameterName,
+      tier: props.tier,
+      value: this.stringValue,
+      valueType: this.valueType,
     };
 
     new CustomResource(this, id, {
@@ -157,6 +160,7 @@ export class SecureStringParameter extends Resource implements IStringParameter 
       resourceType: 'Custom::SecureStringParameter',
       removalPolicy: props.removalPolicy,
       properties,
+      pascalCaseProperties: true,
     });
   }
 

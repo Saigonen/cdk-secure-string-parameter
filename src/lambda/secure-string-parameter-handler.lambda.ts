@@ -1,10 +1,19 @@
 import { KMSClient, DecryptCommand, DecryptCommandInput } from '@aws-sdk/client-kms';
 import { SSMClient, PutParameterCommand, DeleteParameterCommand, PutParameterCommandInput } from '@aws-sdk/client-ssm';
 import type { CloudFormationCustomResourceEvent } from 'aws-lambda';
-import type { SecureStringParameterResourceProperties } from '../secure-string-parameter';
 
 const kms = new KMSClient({ region: process.env.AWS_REGION });
 const ssm = new SSMClient({ region: process.env.AWS_REGION });
+
+export interface SecureStringParameterResourceProperties {
+  readonly AllowedPattern?: string;
+  readonly Description?: string;
+  readonly EncryptionKey?: string;
+  readonly Name: string;
+  readonly Tier?: string;
+  readonly Value: string;
+  readonly ValueType: string;
+}
 
 export type SecureStringCustomResourceEvent = Omit<CloudFormationCustomResourceEvent, 'ResourceProperties'> & {
   ResourceProperties: SecureStringParameterResourceProperties;
@@ -29,32 +38,32 @@ export function handler(event: SecureStringCustomResourceEvent): Promise<CustomR
 }
 
 async function onCreateAndUpdate(event: SecureStringCustomResourceEvent): Promise<CustomResourceResponse> {
-  const { parameterName, stringValue, allowedPattern, description, tier, encryptionKey, valueType } = event.ResourceProperties;
-  const decryptedValue = valueType === 'encrypted' ? await decrypt(stringValue, encryptionKey) : stringValue;
+  const { AllowedPattern, Description, Name, Tier, EncryptionKey, Value, ValueType } = event.ResourceProperties;
+  const decryptedValue = ValueType === 'encrypted' ? await decrypt(Value, EncryptionKey) : Value;
   const params: PutParameterCommandInput = {
-    Name: parameterName,
-    Value: decryptedValue,
+    AllowedPattern,
+    Description,
+    Name,
+    KeyId: EncryptionKey,
     Overwrite: true,
+    Tier,
     Type: 'SecureString',
-    AllowedPattern: allowedPattern,
-    Description: description,
-    Tier: tier,
-    KeyId: encryptionKey,
+    Value: decryptedValue,
   };
   await ssm.send(new PutParameterCommand(params));
   return {
-    PhysicalResourceId: parameterName,
+    PhysicalResourceId: Name,
   };
 }
 
 async function onDelete(event: SecureStringCustomResourceEvent): Promise<CustomResourceResponse> {
-  const { parameterName } = event.ResourceProperties;
+  const { Name } = event.ResourceProperties;
   const params = {
-    Name: parameterName,
+    Name,
   };
   await ssm.send(new DeleteParameterCommand(params));
   return {
-    PhysicalResourceId: parameterName,
+    PhysicalResourceId: Name,
   };
 }
 
