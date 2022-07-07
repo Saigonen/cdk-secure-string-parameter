@@ -4,7 +4,7 @@
 
 ### SecureStringParameter <a name="SecureStringParameter" id="cdk-secure-string-parameter.SecureStringParameter"></a>
 
-- *Implements:* aws-cdk-lib.aws_ssm.IStringParameter
+- *Implements:* aws-cdk-lib.aws_ssm.IStringParameter, aws-cdk-lib.ITaggable
 
 Creates a new SecureString SSM Parameter.
 
@@ -176,6 +176,7 @@ Check whether the given construct is a Resource.
 | <code><a href="#cdk-secure-string-parameter.SecureStringParameter.property.parameterName">parameterName</a></code> | <code>string</code> | The name of the SSM Parameter resource. |
 | <code><a href="#cdk-secure-string-parameter.SecureStringParameter.property.parameterType">parameterType</a></code> | <code>string</code> | The type of the SSM Parameter resource. |
 | <code><a href="#cdk-secure-string-parameter.SecureStringParameter.property.stringValue">stringValue</a></code> | <code>string</code> | The parameter value. |
+| <code><a href="#cdk-secure-string-parameter.SecureStringParameter.property.tags">tags</a></code> | <code>aws-cdk-lib.TagManager</code> | TagManager to set, remove and format tags. |
 | <code><a href="#cdk-secure-string-parameter.SecureStringParameter.property.valueType">valueType</a></code> | <code><a href="#cdk-secure-string-parameter.ValueType">ValueType</a></code> | The type of the stringValue. |
 | <code><a href="#cdk-secure-string-parameter.SecureStringParameter.property.encryptionKey">encryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The encryption key that is used to encrypt this parameter. |
 
@@ -271,6 +272,18 @@ public readonly stringValue: string;
 The parameter value.
 
 Value must not nest another parameter. Do not use {{}} in the value.
+
+---
+
+##### `tags`<sup>Required</sup> <a name="tags" id="cdk-secure-string-parameter.SecureStringParameter.property.tags"></a>
+
+```typescript
+public readonly tags: TagManager;
+```
+
+- *Type:* aws-cdk-lib.TagManager
+
+TagManager to set, remove and format tags.
 
 ---
 
@@ -480,6 +493,7 @@ const camelCaseSecureStringParameterResourceProperties: CamelCaseSecureStringPar
 | <code><a href="#cdk-secure-string-parameter.CamelCaseSecureStringParameterResourceProperties.property.allowedPattern">allowedPattern</a></code> | <code>string</code> | *No description.* |
 | <code><a href="#cdk-secure-string-parameter.CamelCaseSecureStringParameterResourceProperties.property.description">description</a></code> | <code>string</code> | *No description.* |
 | <code><a href="#cdk-secure-string-parameter.CamelCaseSecureStringParameterResourceProperties.property.encryptionKey">encryptionKey</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#cdk-secure-string-parameter.CamelCaseSecureStringParameterResourceProperties.property.tags">tags</a></code> | <code>{[ key: string ]: string}</code> | *No description.* |
 | <code><a href="#cdk-secure-string-parameter.CamelCaseSecureStringParameterResourceProperties.property.tier">tier</a></code> | <code>string</code> | *No description.* |
 
 ---
@@ -541,6 +555,16 @@ public readonly encryptionKey: string;
 ```
 
 - *Type:* string
+
+---
+
+##### `tags`<sup>Optional</sup> <a name="tags" id="cdk-secure-string-parameter.CamelCaseSecureStringParameterResourceProperties.property.tags"></a>
+
+```typescript
+public readonly tags: {[ key: string ]: string};
+```
+
+- *Type:* {[ key: string ]: string}
 
 ---
 

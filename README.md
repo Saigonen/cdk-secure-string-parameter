@@ -30,11 +30,16 @@ new SecureStringParameter(stack, 'MyParameter', {
 
 `SecureStringParameter` implements `IStringParameter` so you can use it as you would a cdk native `StringParameter`.
 
-#### _ValueType_
+### _ValueType_
 
-The extra parameter `valueType` is used to describe the type of the `stringValue`. Valid types are `ValueType.ENCRYPTED` and `ValueType.PLAINTEXT`. If your value is encrypted with a kms key you must also provide the corresponding key in `encryptionKey` parameter.
+The extra parameter `valueType` is used to describe the type of the `stringValue`. Valid types are `ValueType.ENCRYPTED` and `ValueType.PLAINTEXT`. If your value is encrypted with a kms key you must also provide the corresponding key in the `encryptionKey` parameter.
 
 **WARNING** If you use a plaintext value, the value is visible to anyone who has access to cloudformation or deploy artifacts.
+
+### _Tags_
+
+Default Cloudformation Stack tags are not supported. This is because resources created with Custom Resources framework can not be tagged with AWS managed tags.
+However, you can add custom tags to your stack, and they are propagated properly to the created SSM Parameters.
 
 ## Creating encrypted secrets
 
@@ -51,4 +56,4 @@ Next you can encrypt your secrets and get a base64 formatted value which you can
 aws kms encrypt --key-id <alias-name> --plaintext fileb://<(printf <your secret>) --query CiphertextBlob --output text
 ```
 
-With this cdk custom construct you can then create ssm SecureString parameters from these encrypted strings. The encrypted values are first decrypted inside a custom construct lambda and the decrypted value is used as input to the ssm parameter. This way the plaintext value is never visible to those who don't have access to ssm.
+With this cdk custom construct you can then create ssm SecureString parameters from the encrypted strings. The encrypted values are first decrypted inside a custom construct lambda and the decrypted value is used as input to the ssm parameter. This way the plaintext value is never visible to those who don't have access to ssm.

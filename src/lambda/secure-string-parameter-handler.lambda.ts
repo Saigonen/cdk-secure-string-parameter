@@ -1,5 +1,5 @@
 import { KMSClient, DecryptCommand, DecryptCommandInput } from '@aws-sdk/client-kms';
-import { SSMClient, PutParameterCommand, DeleteParameterCommand, PutParameterCommandInput } from '@aws-sdk/client-ssm';
+import { SSMClient, PutParameterCommand, DeleteParameterCommand, ListTagsForResourceCommand, RemoveTagsFromResourceCommand, AddTagsToResourceCommand } from '@aws-sdk/client-ssm';
 import type { CloudFormationCustomResourceEvent } from 'aws-lambda';
 
 const kms = new KMSClient({ region: process.env.AWS_REGION });
@@ -10,6 +10,7 @@ export interface SecureStringParameterResourceProperties {
   readonly Description?: string;
   readonly EncryptionKey?: string;
   readonly Name: string;
+  readonly Tags?: Record<string, string>;
   readonly Tier?: string;
   readonly Value: string;
   readonly ValueType: string;
@@ -38,9 +39,9 @@ export function handler(event: SecureStringCustomResourceEvent): Promise<CustomR
 }
 
 async function onCreateAndUpdate(event: SecureStringCustomResourceEvent): Promise<CustomResourceResponse> {
-  const { AllowedPattern, Description, Name, Tier, EncryptionKey, Value, ValueType } = event.ResourceProperties;
+  const { AllowedPattern, Description, Name, Tags, Tier, EncryptionKey, Value, ValueType } = event.ResourceProperties;
   const decryptedValue = ValueType === 'encrypted' ? await decrypt(Value, EncryptionKey) : Value;
-  const params: PutParameterCommandInput = {
+  await ssm.send(new PutParameterCommand({
     AllowedPattern,
     Description,
     Name,
@@ -49,8 +50,8 @@ async function onCreateAndUpdate(event: SecureStringCustomResourceEvent): Promis
     Tier,
     Type: 'SecureString',
     Value: decryptedValue,
-  };
-  await ssm.send(new PutParameterCommand(params));
+  }));
+  await updateTags(Name, Tags);
   return {
     PhysicalResourceId: Name,
   };
@@ -58,10 +59,9 @@ async function onCreateAndUpdate(event: SecureStringCustomResourceEvent): Promis
 
 async function onDelete(event: SecureStringCustomResourceEvent): Promise<CustomResourceResponse> {
   const { Name } = event.ResourceProperties;
-  const params = {
+  await ssm.send(new DeleteParameterCommand({
     Name,
-  };
-  await ssm.send(new DeleteParameterCommand(params));
+  }));
   return {
     PhysicalResourceId: Name,
   };
@@ -75,4 +75,33 @@ async function decrypt(value: string, key: string | undefined): Promise<string> 
   const { Plaintext } = await kms.send(new DecryptCommand(params));
   if (Plaintext === undefined) throw new Error('Unable to decrypt');
   return Buffer.from(Plaintext).toString('utf-8');
+}
+
+async function updateTags(parameterName: string, tags: Record<string, string> | undefined): Promise<void> {
+  const { TagList } = await ssm.send(new ListTagsForResourceCommand({
+    ResourceType: 'Parameter',
+    ResourceId: parameterName,
+  }));
+  const removableTags = TagList?.reduce((list, tag) => {
+    if (tag.Key && !Object.keys(tags || {}).includes(tag.Key)) {
+      list.push(tag.Key);
+    }
+    return list;
+  }, [] as string[]);
+  if (removableTags?.length) {
+    await ssm.send(new RemoveTagsFromResourceCommand({
+      ResourceType: 'Parameter',
+      ResourceId: parameterName,
+      TagKeys: removableTags,
+    }));
+  }
+  if (tags) {
+    await ssm.send(new AddTagsToResourceCommand({
+      ResourceType: 'Parameter',
+      ResourceId: parameterName,
+      Tags: Object.entries(tags).map(([key, value]) => {
+        return { Key: key, Value: value };
+      }),
+    }));
+  }
 }

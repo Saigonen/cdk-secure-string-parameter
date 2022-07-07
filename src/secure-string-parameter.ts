@@ -1,4 +1,4 @@
-import { CustomResource, RemovalPolicy, Resource, Stack } from 'aws-cdk-lib';
+import { CustomResource, ITaggable, RemovalPolicy, Resource, Stack, TagManager, TagType } from 'aws-cdk-lib';
 import { Effect, Grant, IGrantable, PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { Alias, IAlias, IKey, Key } from 'aws-cdk-lib/aws-kms';
 import { IFunction } from 'aws-cdk-lib/aws-lambda';
@@ -32,9 +32,15 @@ export interface CamelCaseSecureStringParameterResourceProperties {
   readonly description?: string;
   readonly encryptionKey?: string;
   readonly name: string;
+  readonly tags?: Record<string, string>;
   readonly tier?: string;
   readonly value: string;
   readonly valueType: ValueType;
+}
+
+interface StackTag {
+  Key: string;
+  Value: string;
 }
 
 export interface BaseProps extends ParameterOptions {
@@ -94,10 +100,11 @@ export type SecureStringParameterProps = EncryptedSecureStringParameterProps | P
  * If the valueType property is set to `encrypted`, the actual ssm securestring parameter will be created with a decrypted value from the stringValue property.
  * @resource Custom::SecureStringParameter
  */
-export class SecureStringParameter extends Resource implements IStringParameter {
+export class SecureStringParameter extends Resource implements IStringParameter, ITaggable {
   private readonly eventHandler: IFunction;
   private readonly provider: Provider;
   private stringParameter?: IStringParameter;
+  readonly tags: TagManager;
   /**
    * The encryption key that is used to encrypt this parameter.
    *
@@ -115,6 +122,13 @@ export class SecureStringParameter extends Resource implements IStringParameter 
 
   constructor(scope: Construct, id: string, props: SecureStringParameterProps) {
     super(scope, id);
+
+    this.tags = new TagManager(TagType.MAP, 'Custom::SecureStringParameter');
+    // We need to manually add tags from StackProps.
+    // Tags added with Tags.of(scope).add() are handled automatically.
+    Stack.of(this).tags.renderTags()?.forEach((tag: StackTag) => {
+      this.tags.setTag(tag.Key, tag.Value);
+    });
 
     this.valueType = props.valueType;
     this.encryptionKey = props.encryptionKey;
@@ -150,6 +164,7 @@ export class SecureStringParameter extends Resource implements IStringParameter 
       description: props.description,
       encryptionKey: this.encryptionKey?.keyId,
       name: this.parameterName,
+      tags: this.tags.renderedTags as unknown as Record<string, string> | undefined,
       tier: props.tier,
       value: this.stringValue,
       valueType: this.valueType,
@@ -193,7 +208,14 @@ export class SecureStringParameter extends Resource implements IStringParameter 
       initialPolicy: [new PolicyStatement({
         effect: Effect.ALLOW,
         resources: ['*'], // Must allow * to handle parameter name changes
-        actions: ['ssm:PutParameter', 'ssm:DeleteParameter'],
+        actions: [
+          'ssm:PutParameter',
+          'ssm:DeleteParameter',
+          'ssm:GetParameters',
+          'ssm:ListTagsForResource',
+          'ssm:AddTagsToResource',
+          'ssm:RemoveTagsFromResource',
+        ],
       })],
       logRetention: RetentionDays.ONE_WEEK,
     });
