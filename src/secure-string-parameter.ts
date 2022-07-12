@@ -15,19 +15,19 @@ import { arnForParameterName } from './util';
  */
 export enum ValueType {
   /**
-   * Indicates that the value of this parameter is in plain text.
-   */
-  PLAINTEXT = 'plaintext',
-  /**
    * Indicates that the value of this parameter is encrypted with a kms key.
    */
-  ENCRYPTED = 'encrypted'
+  ENCRYPTED = 'encrypted',
+  /**
+   * Indicates that the value of this parameter is in plain text.
+   */
+  PLAINTEXT = 'plaintext'
 }
 
 // Template Literal Types are not yet supported in JSII (https://github.com/aws/jsii/issues/3609)
 // When Typescript 4.x is supported, switch this implementation to:
 // export type CamelCase<T> = { [K in keyof T as Uncapitalize<K & string>]: T[K]; }
-export interface CamelCaseSecureStringParameterResourceProperties {
+interface CamelCaseSecureStringParameterResourceProperties {
   readonly allowedPattern?: string;
   readonly description?: string;
   readonly encryptionKey?: string;
@@ -43,7 +43,7 @@ interface StackTag {
   Value: string;
 }
 
-export interface BaseProps extends ParameterOptions {
+interface BaseProps extends ParameterOptions {
   /**
    * The value of the parameter. It may not reference another parameter and ``{{}}`` cannot be used in the value.
    */
@@ -97,7 +97,7 @@ export type SecureStringParameterProps = EncryptedSecureStringParameterProps | P
 /**
  * Creates a new SecureString SSM Parameter.
  *
- * If the valueType property is set to `encrypted`, the actual ssm securestring parameter will be created with a decrypted value from the stringValue property.
+ * If the valueType property is set to `encrypted`, the actual SSM SecureString Parameter will be created with a decrypted value from the stringValue property.
  * @resource Custom::SecureStringParameter
  */
 export class SecureStringParameter extends Resource implements IStringParameter, ITaggable {

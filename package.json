@@ -84,9 +84,10 @@
     "cdk",
     "encrypted",
     "parameter store",
+    "secure string parameter",
     "securestring",
-    "securestringparameter",
-    "ssm"
+    "ssm",
+    "stringparameter"
   ],
   "main": "lib/index.js",
   "license": "Apache-2.0",

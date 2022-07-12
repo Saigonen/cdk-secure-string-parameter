@@ -6,7 +6,7 @@ const project = new awscdk.AwsCdkConstructLibrary({
   authorAddress: 'matti.saikkonen@gmail.com',
   name: 'cdk-secure-string-parameter',
   description: 'SecureStringParameter Custom Resource for CDK. Enables storing encrypted secrets in version control and using those values in creating SSM SecureString Parameters',
-  keywords: ['securestringparameter', 'securestring', 'parameter store', 'cdk', 'ssm', 'encrypted'],
+  keywords: ['secure string parameter', 'securestring', 'stringparameter', 'parameter store', 'cdk', 'ssm', 'encrypted'],
   repositoryUrl: 'https://github.com/saigonen/cdk-secure-string-parameter',
   defaultReleaseBranch: 'main',
   stability: 'experimental',
