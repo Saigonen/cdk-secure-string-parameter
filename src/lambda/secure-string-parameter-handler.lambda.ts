@@ -2,8 +2,10 @@ import { KMSClient, DecryptCommand, DecryptCommandInput } from '@aws-sdk/client-
 import { SSMClient, PutParameterCommand, DeleteParameterCommand, ListTagsForResourceCommand, RemoveTagsFromResourceCommand, AddTagsToResourceCommand } from '@aws-sdk/client-ssm';
 import type { CloudFormationCustomResourceEvent } from 'aws-lambda';
 
-const kms = new KMSClient({ region: process.env.AWS_REGION });
-const ssm = new SSMClient({ region: process.env.AWS_REGION });
+// https://github.com/aws/aws-sdk-js-v3/issues/3063
+declare global {
+  interface ReadableStream {}
+}
 
 export interface SecureStringParameterResourceProperties {
   readonly AllowedPattern?: string;
@@ -23,6 +25,9 @@ export type SecureStringCustomResourceEvent = Omit<CloudFormationCustomResourceE
 export interface CustomResourceResponse {
   PhysicalResourceId: string;
 }
+
+const kms = new KMSClient({ region: process.env.AWS_REGION });
+const ssm = new SSMClient({ region: process.env.AWS_REGION });
 
 export function handler(event: SecureStringCustomResourceEvent): Promise<CustomResourceResponse> {
   console.debug(JSON.stringify(event));
