@@ -2,11 +2,6 @@ import { KMSClient, DecryptCommand, DecryptCommandInput } from '@aws-sdk/client-
 import { SSMClient, PutParameterCommand, DeleteParameterCommand, ListTagsForResourceCommand, RemoveTagsFromResourceCommand, AddTagsToResourceCommand } from '@aws-sdk/client-ssm';
 import type { CloudFormationCustomResourceEvent } from 'aws-lambda';
 
-// https://github.com/aws/aws-sdk-js-v3/issues/3063
-declare global {
-  interface ReadableStream {}
-}
-
 export interface SecureStringParameterResourceProperties {
   readonly AllowedPattern?: string;
   readonly Description?: string;
