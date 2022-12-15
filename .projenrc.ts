@@ -27,6 +27,9 @@ const project = new awscdk.AwsCdkConstructLibrary({
       sourcemap: true,
     },
   },
+  scripts: {
+    prepare: 'husky install',
+  },
   devDeps: [
     '@aws-sdk/client-kms',
     '@aws-sdk/client-ssm',
@@ -35,6 +38,7 @@ const project = new awscdk.AwsCdkConstructLibrary({
     '@types/aws-lambda',
     '@types/jest@27.4.1', // https://github.com/aws/jsii/issues/3619
     '@types/uuid',
+    'husky',
   ],
   deps: [
   ],
