@@ -49,4 +49,6 @@ const project = new awscdk.AwsCdkConstructLibrary({
   ],
 });
 
+project.addPackageIgnore('cdk.out');
+
 project.synth();
