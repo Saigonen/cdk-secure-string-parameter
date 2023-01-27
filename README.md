@@ -1,7 +1,6 @@
 # cdk-secure-string-parameter
 
 [![source](https://img.shields.io/badge/source-github-blue?logo=github)](https://github.com/saigonen/cdk-secure-string-parameter)
-![build](https://img.shields.io/github/workflow/status/saigonen/cdk-secure-string-parameter/build)
 [![npm release](https://img.shields.io/npm/v/cdk-secure-string-parameter?label=npm)](https://www.npmjs.com/package/cdk-secure-string-parameter)
 ![cdk peer dependency version](https://img.shields.io/npm/dependency-version/cdk-secure-string-parameter/peer/aws-cdk-lib?label=cdk)
 ![npm downloads](https://img.shields.io/npm/dt/cdk-secure-string-parameter)
