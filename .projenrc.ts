@@ -16,6 +16,7 @@ const project = new awscdk.AwsCdkConstructLibrary({
   ],
   pullRequestTemplate: false,
   cdkVersion: '2.24.0',
+  jsiiVersion: '~5.0.0',
   integrationTestAutoDiscover: false,
   depsUpgradeOptions: {
     workflowOptions: {
@@ -37,7 +38,6 @@ const project = new awscdk.AwsCdkConstructLibrary({
     '@commitlint/cli',
     '@commitlint/config-conventional',
     '@types/aws-lambda',
-    '@types/jest@27.4.1', // https://github.com/aws/jsii/issues/3619
     '@types/uuid',
     'husky',
   ],
