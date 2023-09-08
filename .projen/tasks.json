@@ -55,7 +55,7 @@
       "description": "Create a JavaScript bundle from src/lambda/secure-string-parameter-handler.lambda.ts",
       "steps": [
         {
-          "exec": "esbuild --bundle src/lambda/secure-string-parameter-handler.lambda.ts --target=\"node16\" --platform=\"node\" --outfile=\"assets/lambda/secure-string-parameter-handler.lambda/index.js\" --tsconfig=\"tsconfig.dev.json\" --external:aws-sdk --sourcemap"
+          "exec": "esbuild --bundle src/lambda/secure-string-parameter-handler.lambda.ts --target=\"node18\" --platform=\"node\" --outfile=\"assets/lambda/secure-string-parameter-handler.lambda/index.js\" --tsconfig=\"tsconfig.dev.json\" --external:@aws-sdk/* --sourcemap"
         }
       ]
     },
@@ -64,7 +64,7 @@
       "description": "Continuously update the JavaScript bundle from src/lambda/secure-string-parameter-handler.lambda.ts",
       "steps": [
         {
-          "exec": "esbuild --bundle src/lambda/secure-string-parameter-handler.lambda.ts --target=\"node16\" --platform=\"node\" --outfile=\"assets/lambda/secure-string-parameter-handler.lambda/index.js\" --tsconfig=\"tsconfig.dev.json\" --external:aws-sdk --sourcemap --watch"
+          "exec": "esbuild --bundle src/lambda/secure-string-parameter-handler.lambda.ts --target=\"node18\" --platform=\"node\" --outfile=\"assets/lambda/secure-string-parameter-handler.lambda/index.js\" --tsconfig=\"tsconfig.dev.json\" --external:@aws-sdk/* --sourcemap --watch"
         }
       ]
     },

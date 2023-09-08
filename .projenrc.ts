@@ -24,7 +24,7 @@ const project = new awscdk.AwsCdkConstructLibrary({
     },
   },
   lambdaOptions: {
-    runtime: awscdk.LambdaRuntime.NODEJS_16_X,
+    runtime: awscdk.LambdaRuntime.NODEJS_18_X,
     bundlingOptions: {
       sourcemap: true,
     },
