@@ -39,6 +39,7 @@
     "node_modules/",
     "*.generated.ts",
     "coverage",
+    "*-function.ts",
     "!.projenrc.ts",
     "!projenrc/**/*.ts"
   ],
@@ -219,6 +220,12 @@
           "constructor",
           "method"
         ]
+      }
+    ],
+    "@typescript-eslint/consistent-type-imports": [
+      "error",
+      {
+        "fixStyle": "inline-type-imports"
       }
     ]
   },

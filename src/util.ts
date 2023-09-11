@@ -1,9 +1,9 @@
 /**
- * This file is copied from https://github.com/aws/aws-cdk/blob/main/packages/%40aws-cdk/aws-ssm/lib/util.ts
+ * This file was originally copied from https://github.com/aws/aws-cdk/blob/main/packages/%40aws-cdk/aws-ssm/lib/util.ts
  */
 
 import { ArnFormat, Stack, Token } from 'aws-cdk-lib';
-import { IConstruct } from 'constructs';
+import { type IConstruct } from 'constructs';
 
 export const AUTOGEN_MARKER = '$$autogen$$';
 

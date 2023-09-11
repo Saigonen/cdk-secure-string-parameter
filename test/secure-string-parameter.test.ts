@@ -1,6 +1,6 @@
-import { CfnElement, Stack, Tags } from 'aws-cdk-lib';
+import { type CfnElement, Stack, Tags } from 'aws-cdk-lib';
 import { Match, Template } from 'aws-cdk-lib/assertions';
-import { Alias, IKey, Key } from 'aws-cdk-lib/aws-kms';
+import { Alias, type IKey, Key } from 'aws-cdk-lib/aws-kms';
 import { SecureStringParameter, ValueType } from '../src/secure-string-parameter';
 
 describe('SecureStringParameter', () => {

@@ -53,4 +53,14 @@ const project = new awscdk.AwsCdkConstructLibrary({
 
 project.addPackageIgnore('cdk.out');
 
+project.eslint?.addRules({
+  '@typescript-eslint/consistent-type-imports': [
+    'error',
+    {
+      fixStyle: 'inline-type-imports',
+    },
+  ],
+});
+project.eslint?.addIgnorePattern('*-function.ts');
+
 project.synth();

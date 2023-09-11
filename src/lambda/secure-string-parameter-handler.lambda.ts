@@ -1,6 +1,6 @@
-import { KMSClient, DecryptCommand, DecryptCommandInput } from '@aws-sdk/client-kms';
+import { type DecryptCommandInput, KMSClient, DecryptCommand } from '@aws-sdk/client-kms';
 import { SSMClient, PutParameterCommand, DeleteParameterCommand, ListTagsForResourceCommand, RemoveTagsFromResourceCommand, AddTagsToResourceCommand } from '@aws-sdk/client-ssm';
-import type { CloudFormationCustomResourceEvent } from 'aws-lambda';
+import { type CloudFormationCustomResourceEvent } from 'aws-lambda';
 
 export interface SecureStringParameterResourceProperties {
   readonly AllowedPattern?: string;

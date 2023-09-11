@@ -1,13 +1,14 @@
-import { CustomResource, ITaggable, RemovalPolicy, Resource, Stack, TagManager, TagType } from 'aws-cdk-lib';
-import { Effect, Grant, IGrantable, PolicyStatement } from 'aws-cdk-lib/aws-iam';
-import { Alias, IAlias, IKey, Key } from 'aws-cdk-lib/aws-kms';
-import { IFunction } from 'aws-cdk-lib/aws-lambda';
+import { type ITaggable, type RemovalPolicy, CustomResource, Resource, Stack, TagManager, TagType } from 'aws-cdk-lib';
+import { type Grant, type IGrantable, Effect, PolicyStatement } from 'aws-cdk-lib/aws-iam';
+import { type IAlias, type IKey, Alias, Key } from 'aws-cdk-lib/aws-kms';
+import { type IFunction } from 'aws-cdk-lib/aws-lambda';
 import { RetentionDays } from 'aws-cdk-lib/aws-logs';
-import { IStringParameter, ParameterDataType, ParameterOptions, ParameterType, StringParameter } from 'aws-cdk-lib/aws-ssm';
+import { type IStringParameter, type ParameterDataType, type ParameterOptions, ParameterType, StringParameter } from 'aws-cdk-lib/aws-ssm';
 import { Provider } from 'aws-cdk-lib/custom-resources';
-import { Construct } from 'constructs';
+import { type Construct } from 'constructs';
 import * as uuid from 'uuid';
 import { SecureStringParameterHandlerFunction } from './lambda/secure-string-parameter-handler-function';
+import { type SecureStringParameterResourceProperties } from './lambda/secure-string-parameter-handler.lambda';
 import { arnForParameterName } from './util';
 
 /**
@@ -24,19 +25,7 @@ export enum ValueType {
   PLAINTEXT = 'plaintext'
 }
 
-// Template Literal Types are not yet supported in JSII (https://github.com/aws/jsii/issues/3609)
-// When Typescript 4.x is supported, switch this implementation to:
-// export type CamelCase<T> = { [K in keyof T as Uncapitalize<K & string>]: T[K]; }
-interface CamelCaseSecureStringParameterResourceProperties {
-  readonly allowedPattern?: string;
-  readonly description?: string;
-  readonly encryptionKey?: string;
-  readonly name: string;
-  readonly tags?: Record<string, string>;
-  readonly tier?: string;
-  readonly value: string;
-  readonly valueType: ValueType;
-}
+export type CamelCase<T> = { [K in keyof T as Uncapitalize<K & string>]: T[K]; }
 
 interface StackTag {
   Key: string;
@@ -159,7 +148,7 @@ export class SecureStringParameter extends Resource implements IStringParameter,
 
     this.provider = this.getOrCreateProvider();
 
-    const properties: CamelCaseSecureStringParameterResourceProperties = {
+    const properties: CamelCase<SecureStringParameterResourceProperties> = {
       allowedPattern: props.allowedPattern,
       description: props.description,
       encryptionKey: this.encryptionKey?.keyId,
