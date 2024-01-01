@@ -26,7 +26,7 @@
     },
     {
       "name": "@types/node",
-      "version": "^16",
+      "version": "^18",
       "type": "build"
     },
     {
@@ -44,21 +44,7 @@
       "type": "build"
     },
     {
-      "name": "aws-cdk-lib",
-      "version": "2.24.0",
-      "type": "build"
-    },
-    {
-      "name": "constructs",
-      "version": "10.0.5",
-      "type": "build"
-    },
-    {
       "name": "esbuild",
-      "type": "build"
-    },
-    {
-      "name": "eslint-import-resolver-node",
       "type": "build"
     },
     {
@@ -107,11 +93,6 @@
     {
       "name": "jsii",
       "version": "~5.0.0",
-      "type": "build"
-    },
-    {
-      "name": "npm-check-updates",
-      "version": "^16",
       "type": "build"
     },
     {
