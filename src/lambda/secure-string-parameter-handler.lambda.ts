@@ -1,5 +1,5 @@
 import { KMSClient, DecryptCommand, DecryptCommandInput } from '@aws-sdk/client-kms';
-import { SSMClient, PutParameterCommand, DeleteParameterCommand, ListTagsForResourceCommand, RemoveTagsFromResourceCommand, AddTagsToResourceCommand } from '@aws-sdk/client-ssm';
+import { SSMClient, PutParameterCommand, DeleteParameterCommand, ListTagsForResourceCommand, RemoveTagsFromResourceCommand, AddTagsToResourceCommand, ParameterTier } from '@aws-sdk/client-ssm';
 import type { CloudFormationCustomResourceEvent } from 'aws-lambda';
 
 export interface SecureStringParameterResourceProperties {
@@ -8,7 +8,7 @@ export interface SecureStringParameterResourceProperties {
   readonly EncryptionKey?: string;
   readonly Name: string;
   readonly Tags?: Record<string, string>;
-  readonly Tier?: string;
+  readonly Tier?: ParameterTier;
   readonly Value: string;
   readonly ValueType: string;
 }
