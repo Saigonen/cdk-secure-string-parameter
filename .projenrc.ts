@@ -17,7 +17,8 @@ const project = new awscdk.AwsCdkConstructLibrary({
   pullRequestTemplate: false,
   workflowNodeVersion: '18.x',
   cdkVersion: '2.24.0',
-  jsiiVersion: '~5.0.0',
+  jsiiVersion: '~5.3.0',
+  jestOptions: {},
   integrationTestAutoDiscover: false,
   depsUpgradeOptions: {
     workflowOptions: {
@@ -31,7 +32,7 @@ const project = new awscdk.AwsCdkConstructLibrary({
     },
   },
   scripts: {
-    prepare: 'husky install',
+    prepare: 'husky',
   },
   devDeps: [
     '@aws-sdk/client-kms',
