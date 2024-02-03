@@ -51,7 +51,7 @@ new SecureStringParameter(scope: Construct, id: string, props: EncryptedSecureSt
 | <code><a href="#cdk-secure-string-parameter.SecureStringParameter.toString">toString</a></code> | Returns a string representation of this construct. |
 | <code><a href="#cdk-secure-string-parameter.SecureStringParameter.applyRemovalPolicy">applyRemovalPolicy</a></code> | Apply the given removal policy to this resource. |
 | <code><a href="#cdk-secure-string-parameter.SecureStringParameter.asStringParameter">asStringParameter</a></code> | Returns this parameter as a native StringParameter. |
-| <code><a href="#cdk-secure-string-parameter.SecureStringParameter.grantRead">grantRead</a></code> | Grants read (DescribeParameter, GetParameter, GetParameterHistory) permissions on the SSM Parameter. |
+| <code><a href="#cdk-secure-string-parameter.SecureStringParameter.grantRead">grantRead</a></code> | Grants read (DescribeParameter, GetParameters, GetParameter, GetParameterHistory) permissions on the SSM Parameter. |
 | <code><a href="#cdk-secure-string-parameter.SecureStringParameter.grantWrite">grantWrite</a></code> | Grants write (PutParameter) permissions on the SSM Parameter. |
 
 ---
@@ -100,7 +100,7 @@ Returns this parameter as a native StringParameter.
 public grantRead(grantee: IGrantable): Grant
 ```
 
-Grants read (DescribeParameter, GetParameter, GetParameterHistory) permissions on the SSM Parameter.
+Grants read (DescribeParameter, GetParameters, GetParameter, GetParameterHistory) permissions on the SSM Parameter.
 
 ###### `grantee`<sup>Required</sup> <a name="grantee" id="cdk-secure-string-parameter.SecureStringParameter.grantRead.parameter.grantee"></a>
 
@@ -127,6 +127,7 @@ Grants write (PutParameter) permissions on the SSM Parameter.
 | **Name** | **Description** |
 | --- | --- |
 | <code><a href="#cdk-secure-string-parameter.SecureStringParameter.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
+| <code><a href="#cdk-secure-string-parameter.SecureStringParameter.isOwnedResource">isOwnedResource</a></code> | Returns true if the construct was created by CDK, and false otherwise. |
 | <code><a href="#cdk-secure-string-parameter.SecureStringParameter.isResource">isResource</a></code> | Check whether the given construct is a Resource. |
 
 ---
@@ -146,6 +147,22 @@ Checks if `x` is a construct.
 - *Type:* any
 
 Any object.
+
+---
+
+##### `isOwnedResource` <a name="isOwnedResource" id="cdk-secure-string-parameter.SecureStringParameter.isOwnedResource"></a>
+
+```typescript
+import { SecureStringParameter } from 'cdk-secure-string-parameter'
+
+SecureStringParameter.isOwnedResource(construct: IConstruct)
+```
+
+Returns true if the construct was created by CDK, and false otherwise.
+
+###### `construct`<sup>Required</sup> <a name="construct" id="cdk-secure-string-parameter.SecureStringParameter.isOwnedResource.parameter.construct"></a>
+
+- *Type:* constructs.IConstruct
 
 ---
 
@@ -331,7 +348,7 @@ const encryptedSecureStringParameterProps: EncryptedSecureStringParameterProps =
 | <code><a href="#cdk-secure-string-parameter.EncryptedSecureStringParameterProps.property.allowedPattern">allowedPattern</a></code> | <code>string</code> | A regular expression used to validate the parameter value. |
 | <code><a href="#cdk-secure-string-parameter.EncryptedSecureStringParameterProps.property.description">description</a></code> | <code>string</code> | Information about the parameter that you want to add to the system. |
 | <code><a href="#cdk-secure-string-parameter.EncryptedSecureStringParameterProps.property.parameterName">parameterName</a></code> | <code>string</code> | The name of the parameter. |
-| <code><a href="#cdk-secure-string-parameter.EncryptedSecureStringParameterProps.property.simpleName">simpleName</a></code> | <code>boolean</code> | Indicates of the parameter name is a simple name (i.e. does not include "/" separators). |
+| <code><a href="#cdk-secure-string-parameter.EncryptedSecureStringParameterProps.property.simpleName">simpleName</a></code> | <code>boolean</code> | Indicates if the parameter name is a simple name (i.e. does not include "/" separators). |
 | <code><a href="#cdk-secure-string-parameter.EncryptedSecureStringParameterProps.property.tier">tier</a></code> | <code>aws-cdk-lib.aws_ssm.ParameterTier</code> | The tier of the string parameter. |
 | <code><a href="#cdk-secure-string-parameter.EncryptedSecureStringParameterProps.property.encryptionKey">encryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The encryption key that is used to encrypt this parameter. |
 | <code><a href="#cdk-secure-string-parameter.EncryptedSecureStringParameterProps.property.stringValue">stringValue</a></code> | <code>string</code> | The value of the parameter. |
@@ -393,9 +410,9 @@ public readonly simpleName: boolean;
 - *Type:* boolean
 - *Default:* auto-detect based on `parameterName`
 
-Indicates of the parameter name is a simple name (i.e. does not include "/" separators).
+Indicates if the parameter name is a simple name (i.e. does not include "/" separators).
 
-This is only required only if `parameterName` is a token, which means we
+This is required only if `parameterName` is a token, which means we
 are unable to detect if the name is simple or "path-like" for the purpose
 of rendering SSM parameter ARNs.
 
@@ -518,7 +535,7 @@ const plainTextSecureStringParameterProps: PlainTextSecureStringParameterProps =
 | <code><a href="#cdk-secure-string-parameter.PlainTextSecureStringParameterProps.property.allowedPattern">allowedPattern</a></code> | <code>string</code> | A regular expression used to validate the parameter value. |
 | <code><a href="#cdk-secure-string-parameter.PlainTextSecureStringParameterProps.property.description">description</a></code> | <code>string</code> | Information about the parameter that you want to add to the system. |
 | <code><a href="#cdk-secure-string-parameter.PlainTextSecureStringParameterProps.property.parameterName">parameterName</a></code> | <code>string</code> | The name of the parameter. |
-| <code><a href="#cdk-secure-string-parameter.PlainTextSecureStringParameterProps.property.simpleName">simpleName</a></code> | <code>boolean</code> | Indicates of the parameter name is a simple name (i.e. does not include "/" separators). |
+| <code><a href="#cdk-secure-string-parameter.PlainTextSecureStringParameterProps.property.simpleName">simpleName</a></code> | <code>boolean</code> | Indicates if the parameter name is a simple name (i.e. does not include "/" separators). |
 | <code><a href="#cdk-secure-string-parameter.PlainTextSecureStringParameterProps.property.tier">tier</a></code> | <code>aws-cdk-lib.aws_ssm.ParameterTier</code> | The tier of the string parameter. |
 | <code><a href="#cdk-secure-string-parameter.PlainTextSecureStringParameterProps.property.stringValue">stringValue</a></code> | <code>string</code> | The value of the parameter. |
 | <code><a href="#cdk-secure-string-parameter.PlainTextSecureStringParameterProps.property.valueType">valueType</a></code> | <code><a href="#cdk-secure-string-parameter.ValueType">ValueType</a></code> | The type of the stringValue. Use type `encrypted` if the value is encrypted with a kms key. |
@@ -580,9 +597,9 @@ public readonly simpleName: boolean;
 - *Type:* boolean
 - *Default:* auto-detect based on `parameterName`
 
-Indicates of the parameter name is a simple name (i.e. does not include "/" separators).
+Indicates if the parameter name is a simple name (i.e. does not include "/" separators).
 
-This is only required only if `parameterName` is a token, which means we
+This is required only if `parameterName` is a token, which means we
 are unable to detect if the name is simple or "path-like" for the purpose
 of rendering SSM parameter ARNs.
 
