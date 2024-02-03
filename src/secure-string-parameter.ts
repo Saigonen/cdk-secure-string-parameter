@@ -2,7 +2,7 @@ import { CustomResource, ITaggable, RemovalPolicy, Resource, Stack, TagManager, 
 import { Effect, Grant, IGrantable, PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { Alias, IAlias, IKey, Key } from 'aws-cdk-lib/aws-kms';
 import { IFunction } from 'aws-cdk-lib/aws-lambda';
-import { RetentionDays } from 'aws-cdk-lib/aws-logs';
+import { LogGroup, RetentionDays } from 'aws-cdk-lib/aws-logs';
 import { IStringParameter, ParameterDataType, ParameterOptions, ParameterType, StringParameter } from 'aws-cdk-lib/aws-ssm';
 import { Provider } from 'aws-cdk-lib/custom-resources';
 import { Construct } from 'constructs';
@@ -206,7 +206,9 @@ export class SecureStringParameter extends Resource implements IStringParameter,
           'ssm:RemoveTagsFromResource',
         ],
       })],
-      logRetention: RetentionDays.ONE_WEEK,
+      logGroup: new LogGroup(this, 'SecureStringParameterHandlerLogGroup', {
+        retention: RetentionDays.ONE_WEEK,
+      }),
     });
     return eventHandler;
   }
@@ -218,7 +220,9 @@ export class SecureStringParameter extends Resource implements IStringParameter,
     if (existing) return existing as Provider;
     const provider = new Provider(stack, id, {
       onEventHandler: this.eventHandler,
-      logRetention: RetentionDays.ONE_WEEK,
+      logGroup: new LogGroup(this, 'SecureStringParameterProviderLogGroup', {
+        retention: RetentionDays.ONE_WEEK,
+      }),
     });
     return provider;
   }
