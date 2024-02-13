@@ -354,6 +354,7 @@ const encryptedSecureStringParameterProps: EncryptedSecureStringParameterProps =
 | <code><a href="#cdk-secure-string-parameter.EncryptedSecureStringParameterProps.property.stringValue">stringValue</a></code> | <code>string</code> | The value of the parameter. |
 | <code><a href="#cdk-secure-string-parameter.EncryptedSecureStringParameterProps.property.valueType">valueType</a></code> | <code><a href="#cdk-secure-string-parameter.ValueType">ValueType</a></code> | The type of the stringValue. Use type `encrypted` if the value is encrypted with a kms key. |
 | <code><a href="#cdk-secure-string-parameter.EncryptedSecureStringParameterProps.property.dataType">dataType</a></code> | <code>aws-cdk-lib.aws_ssm.ParameterDataType</code> | The data type of the parameter value. |
+| <code><a href="#cdk-secure-string-parameter.EncryptedSecureStringParameterProps.property.overwriteValue">overwriteValue</a></code> | <code>boolean</code> | Decide if the contents of an existing parameter is overwritten on update. |
 | <code><a href="#cdk-secure-string-parameter.EncryptedSecureStringParameterProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | Policy to apply when the parameter is removed from this stack. |
 | <code><a href="#cdk-secure-string-parameter.EncryptedSecureStringParameterProps.property.type">type</a></code> | <code>aws-cdk-lib.aws_ssm.ParameterType</code> | The type of the parameter. |
 
@@ -490,6 +491,19 @@ Only `text` is allowed.
 
 ---
 
+##### `overwriteValue`<sup>Optional</sup> <a name="overwriteValue" id="cdk-secure-string-parameter.EncryptedSecureStringParameterProps.property.overwriteValue"></a>
+
+```typescript
+public readonly overwriteValue: boolean;
+```
+
+- *Type:* boolean
+- *Default:* true
+
+Decide if the contents of an existing parameter is overwritten on update.
+
+---
+
 ##### `removalPolicy`<sup>Optional</sup> <a name="removalPolicy" id="cdk-secure-string-parameter.EncryptedSecureStringParameterProps.property.removalPolicy"></a>
 
 ```typescript
@@ -541,6 +555,7 @@ const plainTextSecureStringParameterProps: PlainTextSecureStringParameterProps =
 | <code><a href="#cdk-secure-string-parameter.PlainTextSecureStringParameterProps.property.valueType">valueType</a></code> | <code><a href="#cdk-secure-string-parameter.ValueType">ValueType</a></code> | The type of the stringValue. Use type `encrypted` if the value is encrypted with a kms key. |
 | <code><a href="#cdk-secure-string-parameter.PlainTextSecureStringParameterProps.property.dataType">dataType</a></code> | <code>aws-cdk-lib.aws_ssm.ParameterDataType</code> | The data type of the parameter value. |
 | <code><a href="#cdk-secure-string-parameter.PlainTextSecureStringParameterProps.property.encryptionKey">encryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The encryption key that is used to encrypt this parameter. |
+| <code><a href="#cdk-secure-string-parameter.PlainTextSecureStringParameterProps.property.overwriteValue">overwriteValue</a></code> | <code>boolean</code> | Decide if the contents of an existing parameter is overwritten on update. |
 | <code><a href="#cdk-secure-string-parameter.PlainTextSecureStringParameterProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | Policy to apply when the parameter is removed from this stack. |
 | <code><a href="#cdk-secure-string-parameter.PlainTextSecureStringParameterProps.property.type">type</a></code> | <code>aws-cdk-lib.aws_ssm.ParameterType</code> | The type of the parameter. |
 
@@ -675,6 +690,19 @@ public readonly encryptionKey: IKey;
 - *Default:* alias/aws/ssm
 
 The encryption key that is used to encrypt this parameter.
+
+---
+
+##### `overwriteValue`<sup>Optional</sup> <a name="overwriteValue" id="cdk-secure-string-parameter.PlainTextSecureStringParameterProps.property.overwriteValue"></a>
+
+```typescript
+public readonly overwriteValue: boolean;
+```
+
+- *Type:* boolean
+- *Default:* true
+
+Decide if the contents of an existing parameter is overwritten on update.
 
 ---
 

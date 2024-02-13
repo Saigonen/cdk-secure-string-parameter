@@ -7,6 +7,7 @@ export interface SecureStringParameterResourceProperties {
   readonly Description?: string;
   readonly EncryptionKey?: string;
   readonly Name: string;
+  readonly Overwrite?: boolean;
   readonly Tags?: Record<string, string>;
   readonly Tier?: ParameterTier;
   readonly Value: string;
@@ -15,7 +16,7 @@ export interface SecureStringParameterResourceProperties {
 
 export type SecureStringCustomResourceEvent = Omit<CloudFormationCustomResourceEvent, 'ResourceProperties'> & {
   ResourceProperties: SecureStringParameterResourceProperties;
-}
+};
 
 export interface CustomResourceResponse {
   PhysicalResourceId: string;
@@ -39,18 +40,20 @@ export function handler(event: SecureStringCustomResourceEvent): Promise<CustomR
 }
 
 async function onCreateAndUpdate(event: SecureStringCustomResourceEvent): Promise<CustomResourceResponse> {
-  const { AllowedPattern, Description, Name, Tags, Tier, EncryptionKey, Value, ValueType } = event.ResourceProperties;
+  const { AllowedPattern, Description, Name, Overwrite, Tags, Tier, EncryptionKey, Value, ValueType } = event.ResourceProperties;
   const decryptedValue = ValueType === 'encrypted' ? await decrypt(Value, EncryptionKey) : Value;
-  await ssm.send(new PutParameterCommand({
-    AllowedPattern,
-    Description,
-    Name,
-    KeyId: EncryptionKey,
-    Overwrite: true,
-    Tier,
-    Type: 'SecureString',
-    Value: decryptedValue,
-  }));
+  await ssm.send(
+    new PutParameterCommand({
+      AllowedPattern,
+      Description,
+      Name,
+      KeyId: EncryptionKey,
+      Overwrite: Overwrite ?? true,
+      Tier,
+      Type: 'SecureString',
+      Value: decryptedValue,
+    }),
+  );
   await updateTags(Name, Tags);
   return {
     PhysicalResourceId: Name,
@@ -59,9 +62,11 @@ async function onCreateAndUpdate(event: SecureStringCustomResourceEvent): Promis
 
 async function onDelete(event: SecureStringCustomResourceEvent): Promise<CustomResourceResponse> {
   const { Name } = event.ResourceProperties;
-  await ssm.send(new DeleteParameterCommand({
-    Name,
-  }));
+  await ssm.send(
+    new DeleteParameterCommand({
+      Name,
+    }),
+  );
   return {
     PhysicalResourceId: Name,
   };
@@ -78,10 +83,12 @@ async function decrypt(value: string, key: string | undefined): Promise<string> 
 }
 
 async function updateTags(parameterName: string, tags: Record<string, string> | undefined): Promise<void> {
-  const { TagList } = await ssm.send(new ListTagsForResourceCommand({
-    ResourceType: 'Parameter',
-    ResourceId: parameterName,
-  }));
+  const { TagList } = await ssm.send(
+    new ListTagsForResourceCommand({
+      ResourceType: 'Parameter',
+      ResourceId: parameterName,
+    }),
+  );
   const removableTags = TagList?.reduce((list, tag) => {
     if (tag.Key && !Object.keys(tags || {}).includes(tag.Key)) {
       list.push(tag.Key);
@@ -89,19 +96,23 @@ async function updateTags(parameterName: string, tags: Record<string, string> | 
     return list;
   }, [] as string[]);
   if (removableTags?.length) {
-    await ssm.send(new RemoveTagsFromResourceCommand({
-      ResourceType: 'Parameter',
-      ResourceId: parameterName,
-      TagKeys: removableTags,
-    }));
+    await ssm.send(
+      new RemoveTagsFromResourceCommand({
+        ResourceType: 'Parameter',
+        ResourceId: parameterName,
+        TagKeys: removableTags,
+      }),
+    );
   }
   if (tags) {
-    await ssm.send(new AddTagsToResourceCommand({
-      ResourceType: 'Parameter',
-      ResourceId: parameterName,
-      Tags: Object.entries(tags).map(([key, value]) => {
-        return { Key: key, Value: value };
+    await ssm.send(
+      new AddTagsToResourceCommand({
+        ResourceType: 'Parameter',
+        ResourceId: parameterName,
+        Tags: Object.entries(tags).map(([key, value]) => {
+          return { Key: key, Value: value };
+        }),
       }),
-    }));
+    );
   }
 }

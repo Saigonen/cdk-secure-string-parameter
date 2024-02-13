@@ -22,10 +22,10 @@ export enum ValueType {
   /**
    * Indicates that the value of this parameter is in plain text.
    */
-  PLAINTEXT = 'plaintext'
+  PLAINTEXT = 'plaintext',
 }
 
-export type CamelCase<T> = { [K in keyof T as Uncapitalize<K & string>]: T[K]; }
+export type CamelCase<T> = { [K in keyof T as Uncapitalize<K & string>]: T[K] };
 
 interface StackTag {
   Key: string;
@@ -52,6 +52,11 @@ interface BaseProps extends ParameterOptions {
    * @default RemovalPolicy.DESTROY
    */
   readonly removalPolicy?: RemovalPolicy;
+  /**
+   * Decide if the contents of an existing parameter is overwritten on update.
+   * @default true
+   */
+  readonly overwriteValue?: boolean;
 }
 
 export interface EncryptedSecureStringParameterProps extends BaseProps {
@@ -81,7 +86,7 @@ export interface PlainTextSecureStringParameterProps extends BaseProps {
   readonly valueType: ValueType.PLAINTEXT;
 }
 
-export type SecureStringParameterProps = EncryptedSecureStringParameterProps | PlainTextSecureStringParameterProps
+export type SecureStringParameterProps = EncryptedSecureStringParameterProps | PlainTextSecureStringParameterProps;
 
 /**
  * Creates a new SecureString SSM Parameter.
@@ -153,6 +158,7 @@ export class SecureStringParameter extends Resource implements IStringParameter,
       description: props.description,
       encryptionKey: this.encryptionKey?.keyId,
       name: this.parameterName,
+      overwrite: props.overwriteValue,
       tags: this.tags.renderedTags as unknown as Record<string, string> | undefined,
       tier: props.tier,
       value: this.stringValue,
