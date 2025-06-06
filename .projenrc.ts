@@ -13,11 +13,12 @@ const project = new awscdk.AwsCdkConstructLibrary({
   projenrcTs: true,
   gitignore: [
     'cdk.out',
+    '.vscode',
   ],
   pullRequestTemplate: false,
-  workflowNodeVersion: '18.x',
+  workflowNodeVersion: '22.x',
   cdkVersion: '2.123.0',
-  jsiiVersion: '~5.3.0',
+  jsiiVersion: '^5.8',
   jestOptions: {},
   integrationTestAutoDiscover: false,
   depsUpgradeOptions: {
@@ -26,7 +27,7 @@ const project = new awscdk.AwsCdkConstructLibrary({
     },
   },
   lambdaOptions: {
-    runtime: awscdk.LambdaRuntime.NODEJS_18_X,
+    runtime: awscdk.LambdaRuntime.NODEJS_22_X,
     bundlingOptions: {
       sourcemap: true,
     },
@@ -39,6 +40,7 @@ const project = new awscdk.AwsCdkConstructLibrary({
     '@aws-sdk/client-ssm',
     '@commitlint/cli',
     '@commitlint/config-conventional',
+    '@stylistic/eslint-plugin@4.4.0',
     '@types/aws-lambda',
     '@types/uuid',
     'husky',

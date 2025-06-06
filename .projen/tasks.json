@@ -32,14 +32,15 @@
         "CHANGELOG": "dist/changelog.md",
         "BUMPFILE": "dist/version.txt",
         "RELEASETAG": "dist/releasetag.txt",
-        "RELEASE_TAG_PREFIX": ""
+        "RELEASE_TAG_PREFIX": "",
+        "BUMP_PACKAGE": "commit-and-tag-version@^12"
       },
       "steps": [
         {
           "builtin": "release/bump-version"
         }
       ],
-      "condition": "! git log --oneline -1 | grep -q \"chore(release):\""
+      "condition": "git log --oneline -1 | grep -qv \"chore(release):\""
     },
     "bundle": {
       "name": "bundle",
@@ -55,7 +56,7 @@
       "description": "Create a JavaScript bundle from src/lambda/secure-string-parameter-handler.lambda.ts",
       "steps": [
         {
-          "exec": "esbuild --bundle src/lambda/secure-string-parameter-handler.lambda.ts --target=\"node18\" --platform=\"node\" --outfile=\"assets/lambda/secure-string-parameter-handler.lambda/index.js\" --tsconfig=\"tsconfig.dev.json\" --external:@aws-sdk/* --sourcemap"
+          "exec": "esbuild --bundle src/lambda/secure-string-parameter-handler.lambda.ts --target=\"node22\" --platform=\"node\" --outfile=\"assets/lambda/secure-string-parameter-handler.lambda/index.js\" --tsconfig=\"tsconfig.dev.json\" --external:@aws-sdk/* --sourcemap"
         }
       ]
     },
@@ -64,7 +65,7 @@
       "description": "Continuously update the JavaScript bundle from src/lambda/secure-string-parameter-handler.lambda.ts",
       "steps": [
         {
-          "exec": "esbuild --bundle src/lambda/secure-string-parameter-handler.lambda.ts --target=\"node18\" --platform=\"node\" --outfile=\"assets/lambda/secure-string-parameter-handler.lambda/index.js\" --tsconfig=\"tsconfig.dev.json\" --external:@aws-sdk/* --sourcemap --watch"
+          "exec": "esbuild --bundle src/lambda/secure-string-parameter-handler.lambda.ts --target=\"node22\" --platform=\"node\" --outfile=\"assets/lambda/secure-string-parameter-handler.lambda/index.js\" --tsconfig=\"tsconfig.dev.json\" --external:@aws-sdk/* --sourcemap --watch"
         }
       ]
     },
@@ -151,6 +152,9 @@
     "eslint": {
       "name": "eslint",
       "description": "Runs eslint against the codebase",
+      "env": {
+        "ESLINT_USE_FLAT_CONFIG": "false"
+      },
       "steps": [
         {
           "exec": "eslint --ext .ts,.tsx --fix --no-error-on-unmatched-pattern $@ src test build-tools projenrc .projenrc.ts",
@@ -181,7 +185,12 @@
       "description": "Creates the distribution package",
       "steps": [
         {
-          "exec": "if [ ! -z ${CI} ]; then rsync -a . .repo --exclude .git --exclude node_modules && rm -rf dist && mv .repo dist; else npx projen package-all; fi"
+          "spawn": "package:js",
+          "condition": "node -e \"if (!process.env.CI) process.exit(1)\""
+        },
+        {
+          "spawn": "package-all",
+          "condition": "node -e \"if (process.env.CI) process.exit(1)\""
         }
       ]
     },
@@ -287,7 +296,8 @@
         "CHANGELOG": "dist/changelog.md",
         "BUMPFILE": "dist/version.txt",
         "RELEASETAG": "dist/releasetag.txt",
-        "RELEASE_TAG_PREFIX": ""
+        "RELEASE_TAG_PREFIX": "",
+        "BUMP_PACKAGE": "commit-and-tag-version@^12"
       },
       "steps": [
         {
@@ -303,13 +313,13 @@
       },
       "steps": [
         {
-          "exec": "npx npm-check-updates@16 --upgrade --target=minor --peer --dep=dev,peer,prod,optional --filter=@aws-sdk/client-kms,@aws-sdk/client-ssm,@commitlint/cli,@commitlint/config-conventional,@types/aws-lambda,@types/jest,@types/node,@types/uuid,@typescript-eslint/eslint-plugin,@typescript-eslint/parser,esbuild,eslint-import-resolver-typescript,eslint-plugin-import,eslint,husky,jest,jest-junit,jsii-diff,jsii-docgen,jsii-pacmak,projen,standard-version,ts-jest,ts-node,typescript,uuid,aws-cdk-lib,constructs"
+          "exec": "npx npm-check-updates@16 --upgrade --target=minor --peer --no-deprecated --dep=dev,peer,prod,optional --filter=@aws-sdk/client-kms,@aws-sdk/client-ssm,@commitlint/cli,@commitlint/config-conventional,@types/aws-lambda,@types/jest,@types/node,@types/uuid,esbuild,eslint-import-resolver-typescript,eslint-plugin-import,husky,jest,jsii-diff,jsii-pacmak,projen,ts-jest,ts-node,typescript,uuid"
         },
         {
           "exec": "yarn install --check-files"
         },
         {
-          "exec": "yarn upgrade @aws-sdk/client-kms @aws-sdk/client-ssm @commitlint/cli @commitlint/config-conventional @types/aws-lambda @types/jest @types/node @types/uuid @typescript-eslint/eslint-plugin @typescript-eslint/parser esbuild eslint-import-resolver-typescript eslint-plugin-import eslint husky jest jest-junit jsii-diff jsii-docgen jsii-pacmak projen standard-version ts-jest ts-node typescript uuid aws-cdk-lib constructs"
+          "exec": "yarn upgrade @aws-sdk/client-kms @aws-sdk/client-ssm @commitlint/cli @commitlint/config-conventional @stylistic/eslint-plugin @types/aws-lambda @types/jest @types/node @types/uuid @typescript-eslint/eslint-plugin @typescript-eslint/parser commit-and-tag-version esbuild eslint-import-resolver-typescript eslint-plugin-import eslint husky jest jest-junit jsii-diff jsii-docgen jsii-pacmak jsii-rosetta jsii projen ts-jest ts-node typescript uuid aws-cdk-lib constructs"
         },
         {
           "exec": "npx projen"
