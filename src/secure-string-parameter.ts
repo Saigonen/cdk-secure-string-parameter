@@ -22,10 +22,10 @@ export enum ValueType {
   /**
    * Indicates that the value of this parameter is in plain text.
    */
-  PLAINTEXT = 'plaintext'
+  PLAINTEXT = 'plaintext',
 }
 
-export type CamelCase<T> = { [K in keyof T as Uncapitalize<K & string>]: T[K]; }
+export type CamelCase<T> = { [K in keyof T as Uncapitalize<K & string>]: T[K]; };
 
 interface StackTag {
   Key: string;
@@ -81,7 +81,7 @@ export interface PlainTextSecureStringParameterProps extends BaseProps {
   readonly valueType: ValueType.PLAINTEXT;
 }
 
-export type SecureStringParameterProps = EncryptedSecureStringParameterProps | PlainTextSecureStringParameterProps
+export type SecureStringParameterProps = EncryptedSecureStringParameterProps | PlainTextSecureStringParameterProps;
 
 /**
  * Creates a new SecureString SSM Parameter.

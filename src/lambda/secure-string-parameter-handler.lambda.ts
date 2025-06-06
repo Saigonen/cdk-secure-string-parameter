@@ -15,7 +15,7 @@ export interface SecureStringParameterResourceProperties {
 
 export type SecureStringCustomResourceEvent = Omit<CloudFormationCustomResourceEvent, 'ResourceProperties'> & {
   ResourceProperties: SecureStringParameterResourceProperties;
-}
+};
 
 export interface CustomResourceResponse {
   PhysicalResourceId: string;
