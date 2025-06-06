@@ -3,7 +3,7 @@
   "description": "SecureStringParameter Custom Resource for CDK. Enables storing encrypted secrets in version control and using those values in creating SSM SecureString Parameters",
   "repository": {
     "type": "git",
-    "url": "https://github.com/saigonen/cdk-secure-string-parameter"
+    "url": "https://github.com/Saigonen/cdk-secure-string-parameter"
   },
   "scripts": {
     "build": "npx projen build",
