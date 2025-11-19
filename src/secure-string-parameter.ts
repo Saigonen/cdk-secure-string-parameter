@@ -1,12 +1,12 @@
+import { randomUUID } from 'crypto';
 import { CustomResource, ITaggable, RemovalPolicy, Resource, Stack, TagManager, TagType } from 'aws-cdk-lib';
 import { Effect, Grant, IGrantable, PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { Alias, IAlias, IKey, Key } from 'aws-cdk-lib/aws-kms';
 import { IFunction } from 'aws-cdk-lib/aws-lambda';
 import { LogGroup, RetentionDays } from 'aws-cdk-lib/aws-logs';
-import { IStringParameter, ParameterDataType, ParameterOptions, ParameterType, StringParameter } from 'aws-cdk-lib/aws-ssm';
+import { IStringParameter, ParameterDataType, ParameterOptions, StringParameter } from 'aws-cdk-lib/aws-ssm';
 import { Provider } from 'aws-cdk-lib/custom-resources';
 import { Construct } from 'constructs';
-import * as uuid from 'uuid';
 import { SecureStringParameterHandlerFunction } from './lambda/secure-string-parameter-handler-function';
 import { SecureStringParameterResourceProperties } from './lambda/secure-string-parameter-handler.lambda';
 import { arnForParameterName } from './util';
@@ -44,9 +44,9 @@ interface BaseProps extends ParameterOptions {
   readonly dataType?: ParameterDataType.TEXT;
   /**
    * The type of the parameter. Only `SecureString` is allowed.
-   * @default ParameterType.SECURE_STRING
+   * @default 'SecureString'
    */
-  readonly type?: ParameterType.SECURE_STRING;
+  readonly type?: string;
   /**
    * Policy to apply when the parameter is removed from this stack.
    * @default RemovalPolicy.DESTROY
@@ -122,8 +122,8 @@ export class SecureStringParameter extends Resource implements IStringParameter,
     this.valueType = props.valueType;
     this.encryptionKey = props.encryptionKey;
     this.stringValue = props.stringValue;
-    this.parameterType = ParameterType.SECURE_STRING;
-    this.parameterName = props.parameterName ?? uuid.v4();
+    this.parameterType = 'SecureString';
+    this.parameterName = props.parameterName ?? randomUUID();
     this.parameterArn = arnForParameterName(this, this.parameterName, { simpleName: props.simpleName });
 
     this.eventHandler = this.getOrCreateHandler();

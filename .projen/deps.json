@@ -34,10 +34,6 @@
       "type": "build"
     },
     {
-      "name": "@types/uuid",
-      "type": "build"
-    },
-    {
       "name": "@typescript-eslint/eslint-plugin",
       "version": "^8",
       "type": "build"
@@ -122,12 +118,8 @@
       "type": "build"
     },
     {
-      "name": "uuid",
-      "type": "bundled"
-    },
-    {
       "name": "aws-cdk-lib",
-      "version": "^2.123.0",
+      "version": "^2.197.0",
       "type": "peer"
     },
     {
