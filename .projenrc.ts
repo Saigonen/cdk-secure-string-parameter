@@ -17,7 +17,7 @@ const project = new awscdk.AwsCdkConstructLibrary({
   ],
   pullRequestTemplate: false,
   workflowNodeVersion: '22.x',
-  cdkVersion: '2.123.0',
+  cdkVersion: '2.197.0',
   jsiiVersion: '^5.8',
   jestOptions: {},
   integrationTestAutoDiscover: false,
@@ -40,9 +40,7 @@ const project = new awscdk.AwsCdkConstructLibrary({
     '@aws-sdk/client-ssm',
     '@commitlint/cli',
     '@commitlint/config-conventional',
-    '@stylistic/eslint-plugin@4.4.0',
     '@types/aws-lambda',
-    '@types/uuid',
     'husky',
   ],
   deps: [
@@ -50,7 +48,6 @@ const project = new awscdk.AwsCdkConstructLibrary({
   peerDeps: [
   ],
   bundledDeps: [
-    'uuid',
   ],
 });
 

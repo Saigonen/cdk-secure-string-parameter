@@ -132,7 +132,7 @@ Grants write (PutParameter) permissions on the SSM Parameter.
 
 ---
 
-##### ~~`isConstruct`~~ <a name="isConstruct" id="cdk-secure-string-parameter.SecureStringParameter.isConstruct"></a>
+##### `isConstruct` <a name="isConstruct" id="cdk-secure-string-parameter.SecureStringParameter.isConstruct"></a>
 
 ```typescript
 import { SecureStringParameter } from 'cdk-secure-string-parameter'
@@ -141,6 +141,20 @@ SecureStringParameter.isConstruct(x: any)
 ```
 
 Checks if `x` is a construct.
+
+Use this method instead of `instanceof` to properly detect `Construct`
+instances, even when the construct library is symlinked.
+
+Explanation: in JavaScript, multiple copies of the `constructs` library on
+disk are seen as independent, completely different libraries. As a
+consequence, the class `Construct` in each copy of the `constructs` library
+is seen as a different class, and an instance of one class will not test as
+`instanceof` the other class. `npm install` will not create installations
+like this, but users may manually symlink construct libraries together or
+use a monorepo tool: in those cases, multiple copies of the `constructs`
+library can be accidentally installed, and `instanceof` will behave
+unpredictably. It is safest to avoid using `instanceof`, and using
+this type-testing method instead.
 
 ###### `x`<sup>Required</sup> <a name="x" id="cdk-secure-string-parameter.SecureStringParameter.isConstruct.parameter.x"></a>
 
@@ -348,14 +362,14 @@ const encryptedSecureStringParameterProps: EncryptedSecureStringParameterProps =
 | <code><a href="#cdk-secure-string-parameter.EncryptedSecureStringParameterProps.property.allowedPattern">allowedPattern</a></code> | <code>string</code> | A regular expression used to validate the parameter value. |
 | <code><a href="#cdk-secure-string-parameter.EncryptedSecureStringParameterProps.property.description">description</a></code> | <code>string</code> | Information about the parameter that you want to add to the system. |
 | <code><a href="#cdk-secure-string-parameter.EncryptedSecureStringParameterProps.property.parameterName">parameterName</a></code> | <code>string</code> | The name of the parameter. |
-| <code><a href="#cdk-secure-string-parameter.EncryptedSecureStringParameterProps.property.simpleName">simpleName</a></code> | <code>boolean</code> | Indicates if the parameter name is a simple name (i.e. does not include "/" separators). |
+| <code><a href="#cdk-secure-string-parameter.EncryptedSecureStringParameterProps.property.simpleName">simpleName</a></code> | <code>boolean</code> | Indicates whether the parameter name is a simple name. |
 | <code><a href="#cdk-secure-string-parameter.EncryptedSecureStringParameterProps.property.tier">tier</a></code> | <code>aws-cdk-lib.aws_ssm.ParameterTier</code> | The tier of the string parameter. |
 | <code><a href="#cdk-secure-string-parameter.EncryptedSecureStringParameterProps.property.encryptionKey">encryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The encryption key that is used to encrypt this parameter. |
 | <code><a href="#cdk-secure-string-parameter.EncryptedSecureStringParameterProps.property.stringValue">stringValue</a></code> | <code>string</code> | The value of the parameter. |
 | <code><a href="#cdk-secure-string-parameter.EncryptedSecureStringParameterProps.property.valueType">valueType</a></code> | <code><a href="#cdk-secure-string-parameter.ValueType">ValueType</a></code> | The type of the stringValue. Use type `encrypted` if the value is encrypted with a kms key. |
 | <code><a href="#cdk-secure-string-parameter.EncryptedSecureStringParameterProps.property.dataType">dataType</a></code> | <code>aws-cdk-lib.aws_ssm.ParameterDataType</code> | The data type of the parameter value. |
 | <code><a href="#cdk-secure-string-parameter.EncryptedSecureStringParameterProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | Policy to apply when the parameter is removed from this stack. |
-| <code><a href="#cdk-secure-string-parameter.EncryptedSecureStringParameterProps.property.type">type</a></code> | <code>aws-cdk-lib.aws_ssm.ParameterType</code> | The type of the parameter. |
+| <code><a href="#cdk-secure-string-parameter.EncryptedSecureStringParameterProps.property.type">type</a></code> | <code>string</code> | The type of the parameter. |
 
 ---
 
@@ -410,7 +424,12 @@ public readonly simpleName: boolean;
 - *Type:* boolean
 - *Default:* auto-detect based on `parameterName`
 
-Indicates if the parameter name is a simple name (i.e. does not include "/" separators).
+Indicates whether the parameter name is a simple name.
+
+A parameter name
+without any "/" is considered a simple name. If the parameter name includes
+"/", setting simpleName to true might cause unintended issues such
+as duplicate "/" in the resulting ARN.
 
 This is required only if `parameterName` is a token, which means we
 are unable to detect if the name is simple or "path-like" for the purpose
@@ -506,11 +525,11 @@ Policy to apply when the parameter is removed from this stack.
 ##### `type`<sup>Optional</sup> <a name="type" id="cdk-secure-string-parameter.EncryptedSecureStringParameterProps.property.type"></a>
 
 ```typescript
-public readonly type: ParameterType;
+public readonly type: string;
 ```
 
-- *Type:* aws-cdk-lib.aws_ssm.ParameterType
-- *Default:* ParameterType.SECURE_STRING
+- *Type:* string
+- *Default:* 'SecureString'
 
 The type of the parameter.
 
@@ -535,14 +554,14 @@ const plainTextSecureStringParameterProps: PlainTextSecureStringParameterProps =
 | <code><a href="#cdk-secure-string-parameter.PlainTextSecureStringParameterProps.property.allowedPattern">allowedPattern</a></code> | <code>string</code> | A regular expression used to validate the parameter value. |
 | <code><a href="#cdk-secure-string-parameter.PlainTextSecureStringParameterProps.property.description">description</a></code> | <code>string</code> | Information about the parameter that you want to add to the system. |
 | <code><a href="#cdk-secure-string-parameter.PlainTextSecureStringParameterProps.property.parameterName">parameterName</a></code> | <code>string</code> | The name of the parameter. |
-| <code><a href="#cdk-secure-string-parameter.PlainTextSecureStringParameterProps.property.simpleName">simpleName</a></code> | <code>boolean</code> | Indicates if the parameter name is a simple name (i.e. does not include "/" separators). |
+| <code><a href="#cdk-secure-string-parameter.PlainTextSecureStringParameterProps.property.simpleName">simpleName</a></code> | <code>boolean</code> | Indicates whether the parameter name is a simple name. |
 | <code><a href="#cdk-secure-string-parameter.PlainTextSecureStringParameterProps.property.tier">tier</a></code> | <code>aws-cdk-lib.aws_ssm.ParameterTier</code> | The tier of the string parameter. |
 | <code><a href="#cdk-secure-string-parameter.PlainTextSecureStringParameterProps.property.stringValue">stringValue</a></code> | <code>string</code> | The value of the parameter. |
 | <code><a href="#cdk-secure-string-parameter.PlainTextSecureStringParameterProps.property.valueType">valueType</a></code> | <code><a href="#cdk-secure-string-parameter.ValueType">ValueType</a></code> | The type of the stringValue. Use type `encrypted` if the value is encrypted with a kms key. |
 | <code><a href="#cdk-secure-string-parameter.PlainTextSecureStringParameterProps.property.dataType">dataType</a></code> | <code>aws-cdk-lib.aws_ssm.ParameterDataType</code> | The data type of the parameter value. |
 | <code><a href="#cdk-secure-string-parameter.PlainTextSecureStringParameterProps.property.encryptionKey">encryptionKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | The encryption key that is used to encrypt this parameter. |
 | <code><a href="#cdk-secure-string-parameter.PlainTextSecureStringParameterProps.property.removalPolicy">removalPolicy</a></code> | <code>aws-cdk-lib.RemovalPolicy</code> | Policy to apply when the parameter is removed from this stack. |
-| <code><a href="#cdk-secure-string-parameter.PlainTextSecureStringParameterProps.property.type">type</a></code> | <code>aws-cdk-lib.aws_ssm.ParameterType</code> | The type of the parameter. |
+| <code><a href="#cdk-secure-string-parameter.PlainTextSecureStringParameterProps.property.type">type</a></code> | <code>string</code> | The type of the parameter. |
 
 ---
 
@@ -597,7 +616,12 @@ public readonly simpleName: boolean;
 - *Type:* boolean
 - *Default:* auto-detect based on `parameterName`
 
-Indicates if the parameter name is a simple name (i.e. does not include "/" separators).
+Indicates whether the parameter name is a simple name.
+
+A parameter name
+without any "/" is considered a simple name. If the parameter name includes
+"/", setting simpleName to true might cause unintended issues such
+as duplicate "/" in the resulting ARN.
 
 This is required only if `parameterName` is a token, which means we
 are unable to detect if the name is simple or "path-like" for the purpose
@@ -694,11 +718,11 @@ Policy to apply when the parameter is removed from this stack.
 ##### `type`<sup>Optional</sup> <a name="type" id="cdk-secure-string-parameter.PlainTextSecureStringParameterProps.property.type"></a>
 
 ```typescript
-public readonly type: ParameterType;
+public readonly type: string;
 ```
 
-- *Type:* aws-cdk-lib.aws_ssm.ParameterType
-- *Default:* ParameterType.SECURE_STRING
+- *Type:* string
+- *Default:* 'SecureString'
 
 The type of the parameter.
 
