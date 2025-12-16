@@ -17,7 +17,7 @@ const project = new awscdk.AwsCdkConstructLibrary({
   ],
   pullRequestTemplate: false,
   workflowNodeVersion: '22.x',
-  cdkVersion: '2.197.0',
+  cdkVersion: '2.227.0',
   jsiiVersion: '^5.8',
   jestOptions: {},
   integrationTestAutoDiscover: false,

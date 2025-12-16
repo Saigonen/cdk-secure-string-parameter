@@ -4,7 +4,7 @@ import { Effect, Grant, IGrantable, PolicyStatement } from 'aws-cdk-lib/aws-iam'
 import { Alias, IAlias, IKey, Key } from 'aws-cdk-lib/aws-kms';
 import { IFunction } from 'aws-cdk-lib/aws-lambda';
 import { LogGroup, RetentionDays } from 'aws-cdk-lib/aws-logs';
-import { IStringParameter, ParameterDataType, ParameterOptions, StringParameter } from 'aws-cdk-lib/aws-ssm';
+import { IStringParameter, ParameterDataType, ParameterOptions, ParameterReference, StringParameter } from 'aws-cdk-lib/aws-ssm';
 import { Provider } from 'aws-cdk-lib/custom-resources';
 import { Construct } from 'constructs';
 import { SecureStringParameterHandlerFunction } from './lambda/secure-string-parameter-handler-function';
@@ -104,6 +104,14 @@ export class SecureStringParameter extends Resource implements IStringParameter,
   readonly parameterName: string;
   readonly parameterType: string;
   readonly stringValue: string;
+  /**
+   * Reference object for this parameter (compat with newer CDK).
+   */
+  get parameterRef(): ParameterReference {
+    return {
+      parameterName: this.parameterName,
+    };
+  }
   /**
    * The type of the stringValue.
    */
