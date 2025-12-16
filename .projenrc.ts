@@ -9,6 +9,7 @@ const project = new awscdk.AwsCdkConstructLibrary({
   keywords: ['secure string parameter', 'securestring', 'stringparameter', 'parameter store', 'cdk', 'ssm', 'encrypted'],
   repositoryUrl: 'https://github.com/Saigonen/cdk-secure-string-parameter',
   defaultReleaseBranch: 'main',
+  npmTrustedPublishing: true,
   stability: 'experimental',
   projenrcTs: true,
   gitignore: [
@@ -16,7 +17,6 @@ const project = new awscdk.AwsCdkConstructLibrary({
     '.vscode',
   ],
   pullRequestTemplate: false,
-  workflowNodeVersion: '22.x',
   cdkVersion: '2.227.0',
   jsiiVersion: '^5.8',
   jestOptions: {},

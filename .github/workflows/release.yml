@@ -31,7 +31,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v5
         with:
-          node-version: 22.x
+          node-version: lts/*
       - name: Install dependencies
         run: yarn install --check-files --frozen-lockfile
       - name: release
@@ -71,7 +71,7 @@ jobs:
     steps:
       - uses: actions/setup-node@v5
         with:
-          node-version: 22.x
+          node-version: lts/*
       - name: Download build artifacts
         uses: actions/download-artifact@v5
         with:
@@ -95,7 +95,7 @@ jobs:
     steps:
       - uses: actions/setup-node@v5
         with:
-          node-version: 22.x
+          node-version: lts/*
       - name: Download build artifacts
         uses: actions/download-artifact@v5
         with:
@@ -123,5 +123,5 @@ jobs:
           NPM_DIST_TAG: latest
           NPM_REGISTRY: registry.npmjs.org
           NPM_CONFIG_PROVENANCE: "true"
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_TRUSTED_PUBLISHER: "true"
         run: npx -p publib@latest publib-npm
