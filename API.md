@@ -49,6 +49,7 @@ new SecureStringParameter(scope: Construct, id: string, props: EncryptedSecureSt
 | **Name** | **Description** |
 | --- | --- |
 | <code><a href="#cdk-secure-string-parameter.SecureStringParameter.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#cdk-secure-string-parameter.SecureStringParameter.with">with</a></code> | Applies one or more mixins to this construct. |
 | <code><a href="#cdk-secure-string-parameter.SecureStringParameter.applyRemovalPolicy">applyRemovalPolicy</a></code> | Apply the given removal policy to this resource. |
 | <code><a href="#cdk-secure-string-parameter.SecureStringParameter.asStringParameter">asStringParameter</a></code> | Returns this parameter as a native StringParameter. |
 | <code><a href="#cdk-secure-string-parameter.SecureStringParameter.grantRead">grantRead</a></code> | Grants read (DescribeParameter, GetParameters, GetParameter, GetParameterHistory) permissions on the SSM Parameter. |
@@ -63,6 +64,27 @@ public toString(): string
 ```
 
 Returns a string representation of this construct.
+
+##### `with` <a name="with" id="cdk-secure-string-parameter.SecureStringParameter.with"></a>
+
+```typescript
+public with(mixins: ...IMixin[]): IConstruct
+```
+
+Applies one or more mixins to this construct.
+
+Mixins are applied in order. The list of constructs is captured at the
+start of the call, so constructs added by a mixin will not be visited.
+Use multiple `with()` calls if subsequent mixins should apply to added
+constructs.
+
+###### `mixins`<sup>Required</sup> <a name="mixins" id="cdk-secure-string-parameter.SecureStringParameter.with.parameter.mixins"></a>
+
+- *Type:* ...constructs.IMixin[]
+
+The mixins to apply.
+
+---
 
 ##### `applyRemovalPolicy` <a name="applyRemovalPolicy" id="cdk-secure-string-parameter.SecureStringParameter.applyRemovalPolicy"></a>
 
